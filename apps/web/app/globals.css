@@ -12,6 +12,8 @@
   --card: #fffaf4;
   --border: rgba(30, 27, 22, 0.12);
   --shadow: 0 24px 60px rgba(26, 22, 17, 0.18);
+  --font-sans: "Futura", "Avenir Next", "Gill Sans", "Trebuchet MS", sans-serif;
+  --font-serif: "Iowan Old Style", "Palatino Linotype", "Garamond", serif;
 }
 
 * {
