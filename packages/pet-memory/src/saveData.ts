@@ -6,6 +6,7 @@ import {
 } from "@ai-pet/pet-core";
 import type { SaveData } from "./types";
 import { CURRENT_SAVE_VERSION } from "./types";
+import { migrateSaveData } from "./migrate";
 
 function toNumber(value: unknown, fallback: number): number {
   if (typeof value === "number" && Number.isFinite(value)) return value;
@@ -47,14 +48,15 @@ export function exportSaveData(
 }
 
 export function importSaveData(data: SaveData, version: number = CURRENT_SAVE_VERSION): SaveData {
-  if (data.version !== version) {
-    throw new Error(`Unsupported save version: ${data.version}`);
+  const migrated = migrateSaveData(data);
+  if (migrated.save.version !== version) {
+    throw new Error(`Unsupported save version: ${migrated.save.version}`);
   }
 
   return {
     version,
-    state: sanitizeState(data.state),
-    kv: { ...(data.kv ?? {}) },
-    log: [...(data.log ?? [])]
+    state: sanitizeState(migrated.save.state),
+    kv: { ...(migrated.save.kv ?? {}) },
+    log: [...(migrated.save.log ?? [])]
   };
 }
