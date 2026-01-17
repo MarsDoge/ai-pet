@@ -2,8 +2,7 @@
 
 ## Current focus
 - Keep CI green with install/test/build only (no artifact upload for now).
-- Decide on future deployment (GitHub Pages vs release packaging).
-- Review static export feasibility for GitHub Pages.
+- Ensure Pages deploys via static export with correct basePath.
 
 ## Recently completed
 - 2026-01-17: Completed pet-core, pet-memory, web (Milestone C), pet-ai (Milestone D), auto-speak (Milestone E).
@@ -15,10 +14,10 @@
 - 2026-01-17: Added API contracts and SaveData migration policy docs.
 - 2026-01-17: Added item effects table and SaveData tests for new KV fields.
 - 2026-01-17: Added Settings panel for provider selection and quick actions.
+- 2026-01-17: GitHub Pages static export deployed with basePath fix.
 
 ## Upcoming
-- Confirm CI green after latest push.
-- Decide whether to add GitHub Pages deployment (static export) or keep CI build-only.
+- Verify Pages deployment URL and add to docs if needed.
 - Add API contract references into package READMEs and docs index.
 
 ## Risks / decisions
