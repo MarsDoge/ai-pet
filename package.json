@@ -1,0 +1,10 @@
+{
+  "name": "ai-pet",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@8.15.4",
+  "scripts": {
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint"
+  }
+}
