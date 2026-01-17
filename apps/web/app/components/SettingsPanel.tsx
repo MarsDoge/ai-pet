@@ -51,6 +51,7 @@ export function SettingsPanel({
   onTogglePanel
 }: SettingsPanelProps) {
   const [status, setStatus] = useState<string | null>(null);
+  const missingKey = provider !== "none" && providerKey.trim().length === 0;
 
   const handleExport = async () => {
     const payload = onExport();
@@ -101,6 +102,9 @@ export function SettingsPanel({
                   </option>
                 ))}
               </select>
+              {missingKey ? (
+                <span className="subtle">未填写 API Key，聊天将使用模板回复。</span>
+              ) : null}
               <input
                 type="password"
                 value={providerKey}
