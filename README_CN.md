@@ -43,6 +43,9 @@ pnpm --filter ./apps/web dev
 
 打开 Next.js 输出的本地地址即可。
 
+### GitHub Pages（静态导出）
+静态导出产物位于 `apps/web/out`，用于 GitHub Pages 部署。
+
 ### 测试
 ```bash
 pnpm -r test

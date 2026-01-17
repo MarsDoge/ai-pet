@@ -43,6 +43,9 @@ pnpm --filter web dev
 
 Open the local URL printed by Next.js.
 
+### GitHub Pages (static export)
+Static export output is generated in `apps/web/out` for GitHub Pages.
+
 ### Tests
 ```bash
 pnpm -r test
