@@ -55,6 +55,7 @@ export function createInitialAppState(now: number): AppState {
       autoSpeak: true,
       saveLoad: true
     },
+    providerErrorDismissedAt: undefined,
     autoSpeakEnabled: true,
     autoSpeakCount: 0,
     autoSpeakDate: today,
@@ -263,6 +264,10 @@ export function loadFromSaveData(save: SaveData, now: number): AppState {
     suggestedActions: [],
     llmProvider,
     settingsPanels,
+    providerErrorDismissedAt:
+      typeof save.kv?.providerErrorDismissedAt === "number"
+        ? save.kv.providerErrorDismissedAt
+        : undefined,
     autoSpeakEnabled: autoSpeak.enabled,
     autoSpeakCount: autoSpeak.date === getTodayKey(now) ? autoSpeak.count : 0,
     autoSpeakDate: getTodayKey(now),

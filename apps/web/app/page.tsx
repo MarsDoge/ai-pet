@@ -129,8 +129,14 @@ export default function HomePage() {
       </header>
 
       <ProviderErrorBanner
-        message={state.providerError}
-        onDismiss={() => setState((prev) => ({ ...prev, providerError: undefined }))}
+        message={state.providerErrorDismissedAt ? undefined : state.providerError}
+        onDismiss={() =>
+          setState((prev) => ({
+            ...prev,
+            providerError: undefined,
+            providerErrorDismissedAt: Date.now()
+          }))
+        }
       />
 
       <div className="app-shell">
