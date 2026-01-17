@@ -15,6 +15,7 @@ export type AppState = {
   log: EventLogEntry[];
   inventory: InventoryItem[];
   message: string;
+  providerError?: string;
   suggestedActions: SuggestedAction[];
   llmProvider: "none" | "openai" | "deepseek" | "ollama";
   settingsPanels: {

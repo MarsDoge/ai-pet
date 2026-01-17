@@ -24,6 +24,7 @@ import { ActionBar } from "./components/ActionBar";
 import { Backpack } from "./components/Backpack";
 import { ChatPanel } from "./components/ChatPanel";
 import { PetStage } from "./components/PetStage";
+import { ProviderErrorBanner } from "./components/ProviderErrorBanner";
 import { SaveLoadPanel } from "./components/SaveLoadPanel";
 import { SettingsPanel } from "./components/SettingsPanel";
 import { StatusPanel } from "./components/StatusPanel";
@@ -126,6 +127,11 @@ export default function HomePage() {
         </h1>
         <p className="subtle">确定性养成循环，无需 AI 也能玩。</p>
       </header>
+
+      <ProviderErrorBanner
+        message={state.providerError}
+        onDismiss={() => setState((prev) => ({ ...prev, providerError: undefined }))}
+      />
 
       <div className="app-shell">
         <div className="stagger" style={{ display: "grid", gap: 24 }}>

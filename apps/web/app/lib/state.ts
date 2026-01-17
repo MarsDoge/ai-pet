@@ -172,7 +172,8 @@ export async function applyChat(
 
   return {
     ...state,
-    message: errorMessage ? `${errorMessage} ${reply.text}` : reply.text,
+    message: reply.text,
+    providerError: errorMessage || undefined,
     suggestedActions: reply.suggestedActions,
     log,
     lastInteractionAt: at
