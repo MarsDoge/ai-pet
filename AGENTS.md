@@ -12,7 +12,7 @@ This repo is a PNPM workspace with planned packages and apps. Use these paths wh
 ## Build, Test, and Development Commands
 Commands are documented in `README.md` and `docs/CODEX_RULES.md`:
 - `pnpm install` installs workspace dependencies.
-- `pnpm --filter web dev` runs the web app locally.
+- `pnpm --filter ./apps/web dev` runs the web app locally.
 - `pnpm -r test` runs all package tests.
 - `pnpm -r lint` runs lint checks.
 
@@ -31,6 +31,16 @@ Commands are documented in `README.md` and `docs/CODEX_RULES.md`:
 - Commit messages follow `type: short summary` (examples: `docs: add execution plan`, `chore: initialize project docs`).
 - Keep PRs scoped to a single milestone unless the change is doc-only.
 - PR descriptions must include: what changed, why, how to test, and risks/known limitations.
+
+## Automation Workflow (AI-First)
+- Use AI as a copilot for planning, breakdown, and implementation.
+- Always start from a written blueprint: update specs or plans before coding.
+- Preferred flow: **docs/specs → issues → code → tests → summary update**.
+- See `docs/WORKFLOW.md` for the detailed checklist.
+
+## Project Status & Summaries
+- Maintain a concise status log in `docs/STATUS.md`.
+- Update it after each milestone or major feature to keep contributors aligned.
 
 ## Configuration & Safety Notes
 - For local AI testing, copy `apps/web/.env.example` to `apps/web/.env`.
