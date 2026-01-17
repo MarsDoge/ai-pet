@@ -1,5 +1,7 @@
 # AI Pet (V0.1)
 
+[![Pages](https://img.shields.io/badge/demo-GitHub%20Pages-brightgreen)](https://marsdoge.github.io/ai-pet/)
+
 A tiny **virtual pet** you can grow with — featuring **offline progression**, **deterministic simulation**, and **optional AI dialogue** (bring your own LLM API).
 
 > V0.1 focus: **pet experience first** (state, actions, progression).  

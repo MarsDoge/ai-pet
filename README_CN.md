@@ -1,5 +1,7 @@
 # AI Pet (V0.1)
 
+[![演示](https://img.shields.io/badge/演示-GitHub%20Pages-brightgreen)](https://marsdoge.github.io/ai-pet/)
+
 一个可以陪你一起成长的**虚拟宠物**——包含**离线进度**、**确定性模拟**，以及**可选 AI 对话**（自备 LLM API）。
 
 > V0.1 重点：**先把宠物体验做对**（状态、动作、成长）。  
