@@ -1,129 +1,196 @@
-# CODEX_RULES — AI Pet Project
+# CODEX_RULES v2 — AI Pet Project 执行规则（含 gh 工作流 / 中文注释）
 
-> Purpose: Keep Codex (and humans) aligned, predictable, and test-driven.  
-> Scope: Applies to **all** work in this repo.
-
----
-
-## 0) Non‑negotiables
-
-1. **Core logic is deterministic.**  
-   - `pet-core` must produce the same output for the same inputs.
-2. **AI never mutates game state.**  
-   - LLM output can only be text + suggestions + optional *KV* memory proposals.
-   - All numeric changes must go through `pet-core` reducers.
-3. **No milestone skipping.**  
-   - Implement in this order: `pet-core` → `pet-memory` → `web` (no AI) → `pet-ai` → auto-speak → docs/demo.
-4. **Every feature has tests or a reason.**  
-   - `pet-core` and `pet-memory` require unit tests.
-5. **Offline progression is mandatory.**  
-   - Tick compensation must be correct and tested.
+> **本文件是强制约束文件（NON-NEGOTIABLE）**  
+> 适用于：Codex / Cursor / 人类开发者  
+> 目标：让项目始终**可控、可测试、不中途跑偏**
 
 ---
 
-## 1) Repo conventions
+## 0️⃣ 总原则（必须遵守）
 
-### 1.1 Workspace structure (required)
-- `apps/web` — UI
-- `packages/pet-core` — deterministic simulation (state, events, reducer, tick)
-- `packages/pet-memory` — KV + event log + save import/export
-- `packages/pet-ai` — persona/prompt + adapters + templates (no state mutation)
-- `packages/shared` — shared types/utils
-
-### 1.2 Code style
-- TypeScript everywhere
-- No duplicated types across packages (export from `shared` or package entry)
-- Prefer small pure functions + explicit inputs/outputs
-
-### 1.3 Commit / PR rules
-- One milestone per PR (unless tiny doc-only change)
-- Keep core logic changes reasonably small (aim <500 LOC per PR for `pet-core`)
-- PR must include:
-  - What changed
-  - Why
-  - How to test (commands)
-  - Risks/known limitations
+### 0.1 确定性优先（Determinism First）
+- `pet-core` 的任何逻辑 **必须是确定性的**
+- 相同输入（state + event + time）→ 相同输出
+- 不允许：
+  - 随机数
+  - 时间隐式依赖
+  - AI 直接参与数值计算
 
 ---
 
-## 2) Milestone gates (Definition of Done)
-
-### Milestone A — pet-core
-- `reduce(state, event)` implemented for required events
-- tick compensation implemented (10 min interval by default)
-- mood derivation implemented
-- unit tests cover:
-  - tick compensation across 1h/6h/24h
-  - each action delta
-  - level-up logic
-  - mood boundary conditions
-- `pnpm -r test` passes
-
-**If Milestone A is not complete, do not start UI.**
-
-### Milestone B — pet-memory
-- KV store + event log (max 200) implemented
-- SaveData export/import with version validation
-- import clamps invalid numeric fields into legal ranges
-- unit tests cover:
-  - truncation
-  - export/import roundtrip
-  - version reject
-
-### Milestone C — web (no AI)
-- floating pet (drag) + bubble
-- status panel
-- action bar (feed/pet/bath/chat/play/sleep) — at least 4 working
-- backpack usage (at least foods)
-- save/load UI
-- on app load: load save → tick compensation → render
-
-### Milestone D — pet-ai
-- templates fallback works without API key
-- LLM adapter interface implemented
-- at least 1 provider adapter integrated (OpenAI/DeepSeek/Ollama)
-- strict JSON output parsing (fallback to text if parse fails)
-- AI output cannot change numeric state
-
-### Milestone E — auto speak
-- triggers: hungry / low energy / dirty / long idle
-- daily limit + on/off setting
-- writes `AUTO_SPEAK` event (no numeric delta)
+### 0.2 AI 永远不能修改数值
+- LLM **只能输出**：
+  - 文本（text）
+  - 情绪标签（emotionTag）
+  - 建议动作（suggestedActions）
+  - KV 记忆建议（memoryWrite）
+- **禁止**：
+  - AI 修改 hunger / energy / coins / exp 等任何数值
+- 所有数值变化：
+  - 必须通过 `pet-core` 的 reducer
+  - 必须生成 event + delta
 
 ---
 
-## 3) Safety & control requirements (must ship in V0.1)
+### 0.3 不允许跳阶段
+**强制执行顺序：**
 
-- **Auto-speak**: default ON, but user can disable. Must have daily cap.
-- **Logs**: every auto behavior is written into event log.
-- **No hidden tool access**: no filesystem/shell control in V0.1.
-- **Graceful degradation**: without LLM configuration, the app remains fully usable.
+```
+pet-core
+  ↓
+pet-memory
+  ↓
+web（无 AI）
+  ↓
+pet-ai
+  ↓
+auto-speak
+  ↓
+docs / demo
+```
 
----
-
-## 4) Implementation constraints (Codex)
-
-- Do not introduce server-side components unless a milestone explicitly requires it.
-- Avoid heavy dependencies; prefer standard libraries.
-- Keep animations minimal and CSS-based in V0.1.
-- Avoid “smart” behaviors in AI that change rules — rules live in `pet-core`.
-
----
-
-## 5) How to run checks
-
-- Install: `pnpm install`
-- Test all: `pnpm -r test`
-- Lint: `pnpm -r lint`
-- Dev: `pnpm --filter web dev`
+如果当前阶段未完成：
+- ❌ 不允许写下一阶段代码
+- ❌ 不允许“先占坑”
 
 ---
 
-## 6) If unsure
+## 1️⃣ 仓库结构约束
 
-When requirements are ambiguous, pick the option that:
-1) preserves determinism,
-2) reduces scope,
-3) improves testability,
-4) keeps the product playable without AI.
+```text
+apps/web              # UI（允许状态展示，不允许核心规则）
+packages/pet-core     # 确定性模拟（state / event / reducer / tick）
+packages/pet-memory   # KV / EventLog / SaveData
+packages/pet-ai       # Persona / Prompt / Adapter / Templates
+packages/shared       # 公共类型与工具
+docs/                 # 所有规格 / 规则 / 计划
+```
+
+规则：
+- `pet-core` **不依赖** `pet-ai`
+- `pet-core` 不引用浏览器 / DOM / Node 特性
+- `pet-ai` 不直接写 storage
+- `web` 不包含业务规则
+
+---
+
+## 2️⃣ GitHub Issues 工作流（必须使用 gh）
+
+> Codex **被允许并被要求** 使用 GitHub CLI（`gh`）
+
+### 2.1 开始工作前（必须）
+
+```bash
+gh issue list --label "area:core,priority:P0"
+```
+
+选择一个 Issue 后：
+
+```bash
+gh issue comment <ISSUE_ID> \
+  --body "🟡 开始处理该 Issue：实现 pet-core 相关逻辑"
+```
+
+---
+
+### 2.2 开发过程中（推荐）
+
+- 重要决策 / 发现边界情况 → 写 Issue 评论
+- 不确定点 → 写 TODO 评论，而不是擅自决定
+
+---
+
+### 2.3 完成 Issue（必须）
+
+完成后：
+
+```bash
+gh issue close <ISSUE_ID> \
+  --comment "✅ 已完成：
+- 实现内容：<简要说明>
+- 测试：vitest 全部通过
+- 影响范围：pet-core（无 UI / 无 AI）"
+```
+
+---
+
+## 3️⃣ 当前阶段执行规范（V0.1）
+
+### 当前阶段：**Milestone A — pet-core**
+
+#### ✅ 允许做的事情
+- 定义 PetState / Event / ReduceResult
+- 实现 reducer（FEED / PET / BATH / PLAY / SLEEP / TICK）
+- 实现 tick 补偿（10 分钟粒度）
+- 实现 mood 派生规则
+- 写 vitest 单测
+
+#### ❌ 禁止做的事情
+- ❌ 任何 UI / React / CSS
+- ❌ 任何 LLM / API 调用
+- ❌ 非确定性逻辑
+- ❌ “先写了再说”
+
+---
+
+## 4️⃣ 测试硬性要求（pet-core / pet-memory）
+
+### pet-core 必须覆盖：
+- tick 补偿：1h / 6h / 24h
+- 每个 action 的 delta
+- level-up 边界
+- mood 阈值边界
+
+### pet-memory 必须覆盖：
+- EventLog 截断
+- SaveData 导入导出一致性
+- 非法数值修复（clamp）
+
+---
+
+## 5️⃣ 提交与 PR 规则
+
+- 一个 PR = 一个 Issue（除非是纯文档）
+- `pet-core` 相关 PR：
+  - 推荐 < 500 行逻辑变更
+  - 必须附带测试
+- PR 描述必须包含：
+  - 做了什么
+  - 为什么这么做
+  - 如何验证
+
+---
+
+## 6️⃣ 失败与降级策略（必须实现）
+
+- LLM 不可用 → 模板回复
+- JSON 解析失败 → 文本 fallback
+- 存档损坏 → 修复 + 警告，而不是崩溃
+
+---
+
+## 7️⃣ 当规则冲突时的决策优先级
+
+1. 本文件（CODEX_RULES）
+2. docs/DEV_SPEC.md
+3. GitHub Issue 描述
+4. README
+
+---
+
+## 8️⃣ Codex 专用启动指令（推荐你复制用）
+
+> 请严格遵守 docs/CODEX_RULES.md（v2）。  
+> 你可以使用 GitHub CLI（gh）管理 Issues。  
+> 请先查看 `area:core + priority:P0` 的 Issue，  
+> 逐个完成并在 Issue 中回写进度与结果。
+
+---
+
+**如果不确定如何做，选择：**
+- 更确定性的方案  
+- 更小的改动  
+- 更容易测试的实现  
+
+这比“聪明但不稳定”的方案更重要。
 
