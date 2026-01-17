@@ -21,6 +21,7 @@
 - 2026-01-17: Added SaveData migration pipeline and tests.
 - 2026-01-17: Added AI provider validation with template fallback on error.
 - 2026-01-17: Added missing API key hint in settings panel.
+- 2026-01-17: Added provider error banner to avoid mixing errors into chat text.
 
 ## Upcoming
 - Verify Pages deployment URL and add to docs if needed.
