@@ -45,6 +45,7 @@ pnpm --filter ./apps/web dev
 
 ### GitHub Pages（静态导出）
 静态导出产物位于 `apps/web/out`，用于 GitHub Pages 部署。
+当部署在仓库子路径（如 `/ai-pet`）时，构建需设置 `NEXT_PUBLIC_BASE_PATH=/ai-pet`。
 
 演示地址：https://marsdoge.github.io/ai-pet/
 

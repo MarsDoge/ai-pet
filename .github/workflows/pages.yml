@@ -33,6 +33,8 @@ jobs:
 
       - name: Build web app (static export)
         run: pnpm --filter ./apps/web build
+        env:
+          NEXT_PUBLIC_BASE_PATH: /ai-pet
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
