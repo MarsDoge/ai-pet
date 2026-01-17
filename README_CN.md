@@ -46,6 +46,8 @@ pnpm --filter ./apps/web dev
 ### GitHub Pages（静态导出）
 静态导出产物位于 `apps/web/out`，用于 GitHub Pages 部署。
 
+演示地址：https://marsdoge.github.io/ai-pet/
+
 ### 测试
 ```bash
 pnpm -r test
