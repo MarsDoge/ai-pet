@@ -14,10 +14,12 @@ export const DEFAULT_INVENTORY: InventoryItem[] = [
   { id: "toy-drum", name: "迷你小鼓", kind: "toy", actionType: "PLAY", quantity: 1 }
 ];
 
-export const ACTION_MESSAGES = {
+export type ActionMessageType = "FEED" | "PET" | "BATH" | "PLAY" | "SLEEP";
+
+export const ACTION_MESSAGES: Record<ActionMessageType, string> = {
   FEED: "开饭啦！肚子舒服多了。",
   PET: "对，就是这里，再来一点。",
   BATH: "洗干净啦，香喷喷的。",
   PLAY: "嗷呜！玩得好开心。",
   SLEEP: "开始充电，小睡一下。"
-} as const;
+};

@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { deriveMood, type CoreEvent } from "@ai-pet/pet-core";
 import { buildExportPayload, importFromPayload, loadSaveData, persistSaveData } from "./lib/storage";
-import { ACTION_MESSAGES, AUTO_SPEAK_POLL_MS } from "./lib/constants";
+import { ACTION_MESSAGES, AUTO_SPEAK_POLL_MS, type ActionMessageType } from "./lib/constants";
 import {
   applyChat,
   applyAutoSpeak,
@@ -62,7 +62,7 @@ export default function HomePage() {
     const event: CoreEvent = { type, at: now };
     setState((prev) => ({
       ...applyEventWithLog(prev, event),
-      message: ACTION_MESSAGES[type]
+      message: ACTION_MESSAGES[type as ActionMessageType] ?? prev.message
     }));
   };
 
