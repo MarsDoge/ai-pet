@@ -5,6 +5,12 @@ import { useState } from "react";
 type SettingsPanelProps = {
   provider: "none" | "openai" | "deepseek" | "ollama";
   onProviderChange: (provider: SettingsPanelProps["provider"]) => void;
+  providerKey: string;
+  providerBaseUrl: string;
+  providerModel: string;
+  onProviderKeyChange: (value: string) => void;
+  onProviderBaseUrlChange: (value: string) => void;
+  onProviderModelChange: (value: string) => void;
   autoSpeakEnabled: boolean;
   autoSpeakCount: number;
   onToggleAutoSpeak: (enabled: boolean) => void;
@@ -29,6 +35,12 @@ const PROVIDER_LABELS: Record<SettingsPanelProps["provider"], string> = {
 export function SettingsPanel({
   provider,
   onProviderChange,
+  providerKey,
+  providerBaseUrl,
+  providerModel,
+  onProviderKeyChange,
+  onProviderBaseUrlChange,
+  onProviderModelChange,
   autoSpeakEnabled,
   autoSpeakCount,
   onToggleAutoSpeak,
@@ -89,6 +101,42 @@ export function SettingsPanel({
                   </option>
                 ))}
               </select>
+              <input
+                type="password"
+                value={providerKey}
+                onChange={(event) => onProviderKeyChange(event.target.value)}
+                placeholder="API Key（可选）"
+                style={{
+                  padding: "10px 12px",
+                  borderRadius: 12,
+                  border: "1px solid var(--border)",
+                  fontFamily: "inherit"
+                }}
+              />
+              <input
+                type="text"
+                value={providerBaseUrl}
+                onChange={(event) => onProviderBaseUrlChange(event.target.value)}
+                placeholder="Base URL（可选）"
+                style={{
+                  padding: "10px 12px",
+                  borderRadius: 12,
+                  border: "1px solid var(--border)",
+                  fontFamily: "inherit"
+                }}
+              />
+              <input
+                type="text"
+                value={providerModel}
+                onChange={(event) => onProviderModelChange(event.target.value)}
+                placeholder="Model（可选）"
+                style={{
+                  padding: "10px 12px",
+                  borderRadius: 12,
+                  border: "1px solid var(--border)",
+                  fontFamily: "inherit"
+                }}
+              />
             </div>
           ) : null}
         </div>

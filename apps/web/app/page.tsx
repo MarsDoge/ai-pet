@@ -2,7 +2,14 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { deriveMood, type CoreEvent } from "@ai-pet/pet-core";
-import { buildExportPayload, importFromPayload, loadSaveData, persistSaveData } from "./lib/storage";
+import {
+  buildExportPayload,
+  importFromPayload,
+  loadProviderSettings,
+  loadSaveData,
+  persistProviderSettings,
+  persistSaveData
+} from "./lib/storage";
 import { ACTION_MESSAGES, AUTO_SPEAK_POLL_MS, type ActionMessageType } from "./lib/constants";
 import {
   applyChat,
@@ -24,6 +31,7 @@ import { StatusPanel } from "./components/StatusPanel";
 export default function HomePage() {
   const [state, setState] = useState<AppState>(() => createInitialAppState(Date.now()));
   const [hydrated, setHydrated] = useState(false);
+  const [providerSettings, setProviderSettings] = useState(() => loadProviderSettings());
 
   useEffect(() => {
     const now = Date.now();
@@ -43,19 +51,27 @@ export default function HomePage() {
 
   useEffect(() => {
     if (!hydrated) return;
+    persistProviderSettings(providerSettings);
+  }, [hydrated, providerSettings]);
+
+  useEffect(() => {
+    if (!hydrated) return;
     const interval = window.setInterval(() => {
-      setState((prev) => applyAutoSpeak(prev, Date.now()));
+      setState((prev) => applyAutoSpeak(prev, Date.now(), providerSettings));
     }, AUTO_SPEAK_POLL_MS);
 
     return () => window.clearInterval(interval);
-  }, [hydrated]);
+  }, [hydrated, providerSettings]);
 
   const moodLabel = useMemo(() => deriveMood(state.pet), [state.pet]);
 
-  const handleAction = (type: CoreEvent["type"] | "CHAT") => {
+  const handleAction = async (type: CoreEvent["type"] | "CHAT") => {
     const now = Date.now();
     if (type === "CHAT") {
-      setState((prev) => applyChat(prev, now));
+      const snapshot = state;
+      const settings = providerSettings;
+      const next = await applyChat(snapshot, now, settings);
+      setState((prev) => (prev === snapshot ? next : prev));
       return;
     }
 
@@ -71,9 +87,12 @@ export default function HomePage() {
     setState((prev) => applyInventoryUse(prev, id, now));
   };
 
-  const handleChatSend = (message: string) => {
+  const handleChatSend = async (message: string) => {
     const now = Date.now();
-    setState((prev) => applyChat(prev, now, message));
+    const snapshot = state;
+    const settings = providerSettings;
+    const next = await applyChat(snapshot, now, settings, message);
+    setState((prev) => (prev === snapshot ? next : prev));
   };
 
   const handleToggleAutoSpeak = (enabled: boolean) => {
@@ -123,7 +142,16 @@ export default function HomePage() {
           />
           <SettingsPanel
             provider={state.llmProvider}
-            onProviderChange={(provider) => setState((prev) => ({ ...prev, llmProvider: provider }))}
+            onProviderChange={(provider) => {
+              setState((prev) => ({ ...prev, llmProvider: provider }));
+              setProviderSettings((prev) => ({ ...prev, provider }));
+            }}
+            providerKey={providerSettings.apiKey ?? ""}
+            providerBaseUrl={providerSettings.baseUrl ?? ""}
+            providerModel={providerSettings.model ?? ""}
+            onProviderKeyChange={(value) => setProviderSettings((prev) => ({ ...prev, apiKey: value }))}
+            onProviderBaseUrlChange={(value) => setProviderSettings((prev) => ({ ...prev, baseUrl: value }))}
+            onProviderModelChange={(value) => setProviderSettings((prev) => ({ ...prev, model: value }))}
             autoSpeakEnabled={state.autoSpeakEnabled}
             autoSpeakCount={state.autoSpeakCount}
             onToggleAutoSpeak={handleToggleAutoSpeak}

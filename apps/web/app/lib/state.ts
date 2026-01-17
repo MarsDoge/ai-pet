@@ -5,7 +5,11 @@ import {
   type CoreEvent,
   type PetState
 } from "@ai-pet/pet-core";
-import { buildTemplateReply } from "@ai-pet/pet-ai";
+import {
+  buildTemplateReply,
+  createTemplateAdapter,
+  fetchOpenAiCompatibleReply
+} from "@ai-pet/pet-ai";
 import { EventLog } from "@ai-pet/pet-memory";
 import type { EventLogEntry, SaveData } from "@ai-pet/pet-memory";
 import {
@@ -99,13 +103,42 @@ export function applyTickCompensationWithLog(state: AppState, nowMs: number): Ap
   return applyEventsWithLog(state, events);
 }
 
-export function buildAiReply(state: AppState, lastUserMessage?: string) {
+type ProviderSettings = {
+  provider: "none" | "openai" | "deepseek" | "ollama";
+  apiKey?: string;
+  baseUrl?: string;
+  model?: string;
+};
+
+export async function buildAiReply(
+  state: AppState,
+  providerSettings: ProviderSettings,
+  lastUserMessage?: string
+) {
   const recentEvents = state.log.slice(-5).map((entry) => ({ type: entry.type, at: entry.at }));
-  return buildTemplateReply({ pet: state.pet, recentEvents, lastUserMessage });
+  const context = { pet: state.pet, recentEvents, lastUserMessage };
+
+  if (providerSettings.provider === "none" || !providerSettings.apiKey) {
+    return buildTemplateReply(context);
+  }
+
+  const baseUrl = providerSettings.baseUrl;
+  const model = providerSettings.model ?? "gpt-4o-mini";
+
+  return fetchOpenAiCompatibleReply(context, {
+    apiKey: providerSettings.apiKey,
+    baseUrl,
+    model
+  });
 }
 
-export function applyChat(state: AppState, at: number, lastUserMessage?: string): AppState {
-  const reply = buildAiReply(state, lastUserMessage);
+export async function applyChat(
+  state: AppState,
+  at: number,
+  providerSettings: ProviderSettings,
+  lastUserMessage?: string
+): Promise<AppState> {
+  const reply = await buildAiReply(state, providerSettings, lastUserMessage);
   const eventLog = new EventLog(state.log);
   const log = eventLog.append({
     type: "CHAT",
@@ -253,7 +286,11 @@ function resetDailyCountIfNeeded(state: AppState, now: number): AppState {
   };
 }
 
-export function applyAutoSpeak(state: AppState, now: number): AppState {
+export function applyAutoSpeak(
+  state: AppState,
+  now: number,
+  providerSettings: ProviderSettings
+): AppState {
   const normalized = resetDailyCountIfNeeded(state, now);
   if (!normalized.autoSpeakEnabled) return normalized;
   if (normalized.autoSpeakCount >= AUTO_SPEAK_LIMIT) return normalized;
@@ -267,7 +304,10 @@ export function applyAutoSpeak(state: AppState, now: number): AppState {
   const reason = getAutoSpeakReason(normalized, now);
   if (!reason) return normalized;
 
-  const reply = buildAiReply(normalized);
+  const reply = buildTemplateReply({
+    pet: normalized.pet,
+    recentEvents: normalized.log.slice(-5).map((entry) => ({ type: entry.type, at: entry.at }))
+  });
   const eventLog = new EventLog(normalized.log);
   const log = eventLog.append({
     type: "AUTO_SPEAK",

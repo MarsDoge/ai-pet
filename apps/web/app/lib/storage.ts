@@ -3,6 +3,40 @@ import type { SaveData } from "@ai-pet/pet-memory";
 import type { AppState } from "./types";
 import { STORAGE_KEY } from "./constants";
 
+type ProviderSettings = {
+  provider: "none" | "openai" | "deepseek" | "ollama";
+  apiKey?: string;
+  baseUrl?: string;
+  model?: string;
+};
+
+const DEFAULT_PROVIDER_SETTINGS: ProviderSettings = {
+  provider: "none",
+  model: "gpt-4o-mini"
+};
+
+export function loadProviderSettings(): ProviderSettings {
+  if (typeof window === "undefined") return DEFAULT_PROVIDER_SETTINGS;
+  const raw = window.localStorage.getItem("ai-pet-provider");
+  if (!raw) return DEFAULT_PROVIDER_SETTINGS;
+  try {
+    const parsed = JSON.parse(raw) as ProviderSettings;
+    return {
+      provider: parsed.provider ?? "none",
+      apiKey: parsed.apiKey,
+      baseUrl: parsed.baseUrl,
+      model: parsed.model ?? DEFAULT_PROVIDER_SETTINGS.model
+    };
+  } catch {
+    return DEFAULT_PROVIDER_SETTINGS;
+  }
+}
+
+export function persistProviderSettings(settings: ProviderSettings): void {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem("ai-pet-provider", JSON.stringify(settings));
+}
+
 export function loadSaveData(): SaveData | null {
   if (typeof window === "undefined") return null;
   const raw = window.localStorage.getItem(STORAGE_KEY);
