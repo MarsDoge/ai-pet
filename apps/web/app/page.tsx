@@ -2,10 +2,11 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { deriveMood, type CoreEvent } from "@ai-pet/pet-core";
-import { importFromPayload, loadSaveData, persistSaveData, buildExportPayload } from "./lib/storage";
-import { ACTION_MESSAGES } from "./lib/constants";
+import { buildExportPayload, importFromPayload, loadSaveData, persistSaveData } from "./lib/storage";
+import { ACTION_MESSAGES, AUTO_SPEAK_POLL_MS } from "./lib/constants";
 import {
   applyChat,
+  applyAutoSpeak,
   applyEventWithLog,
   applyInventoryUse,
   createInitialAppState,
@@ -13,7 +14,9 @@ import {
 } from "./lib/state";
 import type { AppState } from "./lib/types";
 import { ActionBar } from "./components/ActionBar";
+import { AutoSpeakPanel } from "./components/AutoSpeakPanel";
 import { Backpack } from "./components/Backpack";
+import { ChatPanel } from "./components/ChatPanel";
 import { PetStage } from "./components/PetStage";
 import { SaveLoadPanel } from "./components/SaveLoadPanel";
 import { StatusPanel } from "./components/StatusPanel";
@@ -38,12 +41,21 @@ export default function HomePage() {
     persistSaveData(state);
   }, [hydrated, state]);
 
+  useEffect(() => {
+    if (!hydrated) return;
+    const interval = window.setInterval(() => {
+      setState((prev) => applyAutoSpeak(prev, Date.now()));
+    }, AUTO_SPEAK_POLL_MS);
+
+    return () => window.clearInterval(interval);
+  }, [hydrated]);
+
   const moodLabel = useMemo(() => deriveMood(state.pet), [state.pet]);
 
   const handleAction = (type: CoreEvent["type"] | "CHAT") => {
     const now = Date.now();
     if (type === "CHAT") {
-      setState((prev) => applyChat({ ...prev, message: ACTION_MESSAGES.CHAT }, now));
+      setState((prev) => applyChat(prev, now));
       return;
     }
 
@@ -57,6 +69,15 @@ export default function HomePage() {
   const handleUseItem = (id: string) => {
     const now = Date.now();
     setState((prev) => applyInventoryUse(prev, id, now));
+  };
+
+  const handleChatSend = (message: string) => {
+    const now = Date.now();
+    setState((prev) => applyChat(prev, now, message));
+  };
+
+  const handleToggleAutoSpeak = (enabled: boolean) => {
+    setState((prev) => ({ ...prev, autoSpeakEnabled: enabled }));
   };
 
   const handleExport = () => buildExportPayload(state);
@@ -95,6 +116,16 @@ export default function HomePage() {
 
         <div className="stagger" style={{ display: "grid", gap: 24 }}>
           <ActionBar onAction={handleAction} />
+          <ChatPanel
+            onSend={handleChatSend}
+            reply={state.message}
+            suggestedActions={state.suggestedActions}
+          />
+          <AutoSpeakPanel
+            enabled={state.autoSpeakEnabled}
+            count={state.autoSpeakCount}
+            onToggle={handleToggleAutoSpeak}
+          />
           <Backpack items={state.inventory} onUse={handleUseItem} />
           <SaveLoadPanel
             onExport={handleExport}

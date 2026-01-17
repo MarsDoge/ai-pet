@@ -19,12 +19,38 @@ export function loadSaveData(): SaveData | null {
 
 export function persistSaveData(state: AppState): void {
   if (typeof window === "undefined") return;
-  const save = exportSaveData(state.pet, { inventory: state.inventory }, state.log);
+  const save = exportSaveData(
+    state.pet,
+    {
+      inventory: state.inventory,
+      autoSpeak: {
+        enabled: state.autoSpeakEnabled,
+        count: state.autoSpeakCount,
+        date: state.autoSpeakDate,
+        lastAutoSpeakAt: state.lastAutoSpeakAt,
+        lastInteractionAt: state.lastInteractionAt
+      }
+    },
+    state.log
+  );
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(save));
 }
 
 export function buildExportPayload(state: AppState): string {
-  const save = exportSaveData(state.pet, { inventory: state.inventory }, state.log);
+  const save = exportSaveData(
+    state.pet,
+    {
+      inventory: state.inventory,
+      autoSpeak: {
+        enabled: state.autoSpeakEnabled,
+        count: state.autoSpeakCount,
+        date: state.autoSpeakDate,
+        lastAutoSpeakAt: state.lastAutoSpeakAt,
+        lastInteractionAt: state.lastInteractionAt
+      }
+    },
+    state.log
+  );
   return JSON.stringify(save, null, 2);
 }
 
