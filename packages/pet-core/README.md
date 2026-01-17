@@ -18,6 +18,9 @@ Deterministic simulation engine for AI Pet.
 - `applyTickCompensation(state, now)`
 - `deriveMood(state)`
 
+## Contracts
+- See `docs/API_CONTRACTS.md`.
+
 ## Tests
 Run from repo root:
 

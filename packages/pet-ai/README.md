@@ -17,5 +17,8 @@ Optional AI layer for AI Pet.
 - `fetchOpenAiCompatibleReply()`
 - `AiReply`, `ContextSnapshot`
 
+## Contracts
+- See `docs/API_CONTRACTS.md`.
+
 ## Tests
 No tests yet.

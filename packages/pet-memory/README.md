@@ -17,6 +17,9 @@ Persistence layer for AI Pet.
 - `KVStore`
 - `EventLog`
 
+## Contracts
+- See `docs/API_CONTRACTS.md`.
+
 ## Tests
 Run from repo root:
 

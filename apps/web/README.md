@@ -9,6 +9,9 @@ Next.js UI for AI Pet.
 - Manage local persistence and JSON export/import.
 - Display chat replies and auto-speak UI.
 
+## Contracts
+- See `docs/API_CONTRACTS.md`.
+
 ## Rules
 - UI layer only; no game rules here.
 - All numeric changes must go through pet-core reducers.
