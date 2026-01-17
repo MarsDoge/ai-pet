@@ -6,6 +6,7 @@ const LOW_CLEANLINESS_THRESHOLD = 20;
 const LOW_FUN_THRESHOLD = 20;
 const HIGH_AFFECTION_THRESHOLD = 80;
 
+/** Derive mood from current state thresholds. */
 export function deriveMood(state: PetState): Mood {
   if (state.hunger >= HUNGER_THRESHOLD) return "HUNGRY";
   if (state.energy <= LOW_ENERGY_THRESHOLD) return "TIRED";

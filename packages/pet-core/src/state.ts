@@ -13,6 +13,7 @@ export const DEFAULT_PET_STATE: PetState = {
   lastTickAt: 0
 };
 
+/** Create a deterministic initial state with optional overrides. */
 export function createInitialState(overrides: Partial<PetState> = {}): PetState {
   return clampState({
     ...DEFAULT_PET_STATE,

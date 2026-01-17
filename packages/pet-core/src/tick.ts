@@ -13,10 +13,12 @@ export function buildTickEvent(at: number): CoreEvent {
   return { type: "TICK", at };
 }
 
+/** Apply a single TICK event at the given timestamp. */
 export function applyTick(state: PetState, at: number): PetState {
   return reduce(state, buildTickEvent(at)).state;
 }
 
+/** Apply tick compensation based on lastTickAt and interval. */
 export function applyTickCompensation(
   state: PetState,
   nowMs: number,

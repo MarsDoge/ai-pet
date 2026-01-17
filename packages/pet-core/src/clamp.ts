@@ -22,6 +22,7 @@ export function clampLevel(value: number): number {
   return value < LEVEL_MIN ? LEVEL_MIN : value;
 }
 
+/** Clamp all numeric fields into their legal ranges. */
 export function clampState(state: PetState): PetState {
   return {
     ...state,

@@ -44,6 +44,7 @@ function diffState(previous: PetState, next: PetState): StatDelta {
   return delta;
 }
 
+/** Apply a core event and return next state plus numeric delta. */
 export function reduce(state: PetState, event: CoreEvent): ReduceResult {
   const baseDelta = ACTION_DELTAS[event.type] ?? {};
   const withDelta = applyDelta(state, baseDelta);
