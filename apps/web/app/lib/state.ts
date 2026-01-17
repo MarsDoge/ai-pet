@@ -43,7 +43,7 @@ export function createInitialAppState(now: number): AppState {
     pet: createInitialState({ lastTickAt: now }),
     log: [],
     inventory: DEFAULT_INVENTORY,
-    message: "Just arrived. Let's explore together.",
+    message: "我刚到哦，一起探索吧。",
     suggestedActions: [],
     autoSpeakEnabled: true,
     autoSpeakCount: 0,
@@ -136,7 +136,7 @@ export function applyInventoryUse(state: AppState, itemId: string, at: number): 
 
   return {
     ...nextState,
-    message: `${target.name} used. ${target.kind === "food" ? "Yum." : "That was fun."}`
+    message: `${target.name} 已使用。${target.kind === "food" ? "真香。" : "太好玩了。"}`
   };
 }
 
@@ -175,7 +175,7 @@ export function loadFromSaveData(save: SaveData, now: number): AppState {
     pet: { ...save.state, lastTickAt: save.state.lastTickAt ?? 0 },
     log: save.log ?? [],
     inventory,
-    message: "Welcome back.",
+    message: "欢迎回来。",
     suggestedActions: [],
     autoSpeakEnabled: autoSpeak.enabled,
     autoSpeakCount: autoSpeak.date === getTodayKey(now) ? autoSpeak.count : 0,
@@ -200,10 +200,10 @@ export function buildExportState(state: AppState): AppState {
 type AutoSpeakReason = "HUNGRY" | "TIRED" | "DIRTY" | "IDLE";
 
 const AUTO_SPEAK_MESSAGES: Record<AutoSpeakReason, string> = {
-  HUNGRY: "I'm getting hungry. Got anything tasty?",
-  TIRED: "I'm fading a little. A nap would help.",
-  DIRTY: "I feel messy. Can we clean up?",
-  IDLE: "It's been quiet... want to do something together?"
+  HUNGRY: "我有点饿了，有没有好吃的？",
+  TIRED: "有点累了，想睡一会儿。",
+  DIRTY: "身上有点脏，能帮我洗洗吗？",
+  IDLE: "好久没动静了，我们做点什么吧？"
 };
 
 function getAutoSpeakReason(state: AppState, now: number): AutoSpeakReason | null {

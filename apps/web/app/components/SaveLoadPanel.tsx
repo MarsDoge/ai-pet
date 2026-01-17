@@ -16,38 +16,38 @@ export function SaveLoadPanel({ onExport, onImport, onSaveNow, lastSavedAt }: Sa
   const handleExport = () => {
     const data = onExport();
     setPayload(data);
-    setStatus("Export ready.");
+    setStatus("导出完成。");
   };
 
   const handleImport = () => {
     const result = onImport(payload);
-    setStatus(result ?? "Import succeeded.");
+    setStatus(result ?? "导入成功。");
   };
 
   return (
     <section className="panel">
-      <h2 className="section-title">Save & Load</h2>
-      <p className="subtle">Manual export/import uses JSON. Auto-save writes to localStorage.</p>
+      <h2 className="section-title">存档与读取</h2>
+      <p className="subtle">手动导入/导出使用 JSON，自动存档写入本地存储。</p>
       <div className="save-grid" style={{ marginTop: 12 }}>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           <button className="action-button" type="button" onClick={onSaveNow}>
-            Save now
+            立即存档
           </button>
           <button className="action-button" type="button" onClick={handleExport}>
-            Export JSON
+            导出 JSON
           </button>
           <button className="action-button" type="button" onClick={handleImport}>
-            Import JSON
+            导入 JSON
           </button>
         </div>
         <textarea
           value={payload}
           onChange={(event) => setPayload(event.target.value)}
-          placeholder="Paste exported JSON here"
+          placeholder="在此粘贴导出的 JSON"
         />
         <div className="subtle">
           {status ? status : ""}
-          {lastSavedAt ? ` Last saved: ${new Date(lastSavedAt).toLocaleTimeString()}.` : ""}
+          {lastSavedAt ? ` 上次存档：${new Date(lastSavedAt).toLocaleTimeString()}。` : ""}
         </div>
       </div>
     </section>

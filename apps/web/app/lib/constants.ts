@@ -8,16 +8,16 @@ export const AUTO_SPEAK_COOLDOWN_MS = 5 * 60 * 1000;
 export const AUTO_SPEAK_POLL_MS = 20 * 1000;
 
 export const DEFAULT_INVENTORY: InventoryItem[] = [
-  { id: "food-basic", name: "Crunchy Kibble", kind: "food", actionType: "FEED", quantity: 3 },
-  { id: "food-berry", name: "Star Berry", kind: "food", actionType: "FEED", quantity: 2 },
-  { id: "toy-ring", name: "Orbit Ring", kind: "toy", actionType: "PLAY", quantity: 2 },
-  { id: "toy-drum", name: "Mini Drum", kind: "toy", actionType: "PLAY", quantity: 1 }
+  { id: "food-basic", name: "酥脆小饼干", kind: "food", actionType: "FEED", quantity: 3 },
+  { id: "food-berry", name: "星星莓", kind: "food", actionType: "FEED", quantity: 2 },
+  { id: "toy-ring", name: "星环玩具", kind: "toy", actionType: "PLAY", quantity: 2 },
+  { id: "toy-drum", name: "迷你小鼓", kind: "toy", actionType: "PLAY", quantity: 1 }
 ];
 
 export const ACTION_MESSAGES = {
-  FEED: "Snack time! Feeling fuller already.",
-  PET: "That is the good spot. Keep going.",
-  BATH: "All fresh and fluffy again.",
-  PLAY: "Zoom zoom! That was fun.",
-  SLEEP: "Powering down for a cozy nap."
+  FEED: "开饭啦！肚子舒服多了。",
+  PET: "对，就是这里，再来一点。",
+  BATH: "洗干净啦，香喷喷的。",
+  PLAY: "嗷呜！玩得好开心。",
+  SLEEP: "开始充电，小睡一下。"
 } as const;

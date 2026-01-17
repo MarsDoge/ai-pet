@@ -9,6 +9,15 @@ type ChatPanelProps = {
   suggestedActions: SuggestedAction[];
 };
 
+const ACTION_LABELS: Record<SuggestedAction, string> = {
+  FEED: "喂食",
+  PET: "抚摸",
+  BATH: "洗澡",
+  PLAY: "玩耍",
+  SLEEP: "睡觉",
+  CHAT: "聊天"
+};
+
 export function ChatPanel({ onSend, reply, suggestedActions }: ChatPanelProps) {
   const [message, setMessage] = useState("");
 
@@ -20,19 +29,19 @@ export function ChatPanel({ onSend, reply, suggestedActions }: ChatPanelProps) {
 
   return (
     <section className="panel soft">
-      <h2 className="section-title">Chat</h2>
-      <p className="subtle">Template replies are used when no LLM is configured.</p>
+      <h2 className="section-title">对话</h2>
+      <p className="subtle">未配置 LLM 时将使用模板回复。</p>
       <div style={{ marginTop: 12, display: "grid", gap: 8 }}>
         <div className="speech-bubble" style={{ position: "relative", top: "auto", left: "auto" }}>
           <strong style={{ fontSize: 14 }}>{reply}</strong>
         </div>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           {suggestedActions.length === 0 ? (
-            <span className="subtle">No suggestions yet.</span>
+            <span className="subtle">暂无建议动作。</span>
           ) : (
             suggestedActions.map((action) => (
               <span key={action} className="badge">
-                {action}
+                {ACTION_LABELS[action]}
               </span>
             ))
           )}
@@ -41,7 +50,7 @@ export function ChatPanel({ onSend, reply, suggestedActions }: ChatPanelProps) {
           <input
             type="text"
             value={message}
-            placeholder="Say hello..."
+            placeholder="说点什么..."
             onChange={(event) => setMessage(event.target.value)}
             style={{
               flex: 1,
@@ -53,7 +62,7 @@ export function ChatPanel({ onSend, reply, suggestedActions }: ChatPanelProps) {
             }}
           />
           <button className="action-button" type="button" onClick={handleSend}>
-            Send
+            发送
           </button>
         </div>
       </div>

@@ -9,6 +9,15 @@ type PetStageProps = {
 };
 
 export function PetStage({ moodLabel, message }: PetStageProps) {
+  const moodMap: Record<string, string> = {
+    HUNGRY: "饥饿",
+    TIRED: "困倦",
+    DIRTY: "脏了",
+    BORED: "无聊",
+    HAPPY: "开心",
+    CONTENT: "舒适"
+  };
+  const moodText = moodMap[moodLabel] ?? moodLabel;
   const stageRef = useRef<HTMLDivElement | null>(null);
   const [position, setPosition] = useState({ x: 140, y: 140 });
   const dragOffset = useRef({ x: 0, y: 0 });
@@ -49,13 +58,13 @@ export function PetStage({ moodLabel, message }: PetStageProps) {
   return (
     <div className="panel pet-stage fade-in" ref={stageRef}>
       <div className="badge" style={{ position: "absolute", right: 18, top: 18 }}>
-        mood {moodLabel}
+        心情 {moodText}
       </div>
       <SpeechBubble message={message} />
       <div
         className="pet-avatar"
         role="button"
-        aria-label="Drag the pet"
+        aria-label="拖动宠物"
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}

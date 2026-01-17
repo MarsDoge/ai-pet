@@ -11,18 +11,18 @@ type AutoSpeakPanelProps = {
 export function AutoSpeakPanel({ enabled, count, onToggle }: AutoSpeakPanelProps) {
   return (
     <section className="panel">
-      <h2 className="section-title">Auto Speak</h2>
-      <p className="subtle">Automatic messages when needs are urgent or idle.</p>
+      <h2 className="section-title">自动说话</h2>
+      <p className="subtle">需求紧急或长时间闲置时自动提示。</p>
       <div style={{ marginTop: 12, display: "flex", gap: 12, flexWrap: "wrap" }}>
         <button
           className="action-button"
           type="button"
           onClick={() => onToggle(!enabled)}
         >
-          {enabled ? "Disable" : "Enable"}
+          {enabled ? "关闭" : "开启"}
         </button>
         <span className="subtle">
-          {count}/{AUTO_SPEAK_LIMIT} today
+          今日 {count}/{AUTO_SPEAK_LIMIT}
         </span>
       </div>
     </section>

@@ -89,7 +89,7 @@ export default function HomePage() {
       return null;
     } catch (error) {
       console.error(error);
-      return "Import failed. Check the JSON format and version.";
+      return "导入失败，请检查 JSON 格式与版本。";
     }
   };
 
@@ -101,11 +101,11 @@ export default function HomePage() {
   return (
     <main>
       <header className="fade-in">
-        <span className="badge">offline-ready</span>
+        <span className="badge">离线可用</span>
         <h1 style={{ marginTop: 12, fontSize: "clamp(28px, 5vw, 44px)" }}>
-          AI Pet Playground
+          AI 宠物小屋
         </h1>
-        <p className="subtle">Deterministic care loop. No AI required.</p>
+        <p className="subtle">确定性养成循环，无需 AI 也能玩。</p>
       </header>
 
       <div className="app-shell">
