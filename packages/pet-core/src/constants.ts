@@ -11,3 +11,17 @@ export const ACTION_DELTAS: Record<CoreEventType, StatDelta> = {
   SLEEP: { energy: 25, hunger: 5, cleanliness: -2, exp: 2 },
   TICK: { hunger: 1, energy: -1, cleanliness: -1, fun: -1 }
 };
+
+export type ItemEffect = {
+  id: string;
+  name: string;
+  actionType: Exclude<CoreEventType, "TICK">;
+  delta: StatDelta;
+};
+
+export const ITEM_EFFECTS: ItemEffect[] = [
+  { id: "food-basic", name: "Crunchy Kibble", actionType: "FEED", delta: { hunger: -10, exp: 1 } },
+  { id: "food-berry", name: "Star Berry", actionType: "FEED", delta: { hunger: -15, fun: 2, exp: 2 } },
+  { id: "toy-ring", name: "Orbit Ring", actionType: "PLAY", delta: { fun: 8, energy: -2, exp: 2 } },
+  { id: "toy-drum", name: "Mini Drum", actionType: "PLAY", delta: { fun: 10, energy: -3, exp: 3 } }
+];

@@ -20,12 +20,24 @@ const baseState = {
 
 describe("SaveData", () => {
   it("round-trips export/import", () => {
-    const save = exportSaveData(baseState, { foo: "bar" }, [{ type: "TICK", at: 1200 }]);
+    const save = exportSaveData(
+      baseState,
+      {
+        foo: "bar",
+        inventory: [{ id: "food-basic", name: "Crunchy Kibble", kind: "food", quantity: 1 }],
+        autoSpeak: { enabled: true, count: 2, date: "2026-01-17" }
+      },
+      [{ type: "TICK", at: 1200 }]
+    );
     const loaded = importSaveData(save);
 
     expect(loaded.version).toBe(CURRENT_SAVE_VERSION);
     expect(loaded.state).toEqual(baseState);
-    expect(loaded.kv).toEqual({ foo: "bar" });
+    expect(loaded.kv).toEqual({
+      foo: "bar",
+      inventory: [{ id: "food-basic", name: "Crunchy Kibble", kind: "food", quantity: 1 }],
+      autoSpeak: { enabled: true, count: 2, date: "2026-01-17" }
+    });
     expect(loaded.log).toEqual([{ type: "TICK", at: 1200 }]);
   });
 
