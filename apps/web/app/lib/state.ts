@@ -118,8 +118,11 @@ export async function buildAiReply(
   const recentEvents = state.log.slice(-5).map((entry) => ({ type: entry.type, at: entry.at }));
   const context = { pet: state.pet, recentEvents, lastUserMessage };
 
-  if (providerSettings.provider === "none" || !providerSettings.apiKey) {
+  if (providerSettings.provider === "none") {
     return buildTemplateReply(context);
+  }
+  if (!providerSettings.apiKey) {
+    throw new Error("missing_api_key");
   }
 
   const baseUrl = providerSettings.baseUrl;
@@ -138,17 +141,38 @@ export async function applyChat(
   providerSettings: ProviderSettings,
   lastUserMessage?: string
 ): Promise<AppState> {
-  const reply = await buildAiReply(state, providerSettings, lastUserMessage);
+  let reply = null;
+  let errorMessage = "";
+
+  try {
+    reply = await buildAiReply(state, providerSettings, lastUserMessage);
+  } catch (error) {
+    if (error instanceof Error && error.message === "missing_api_key") {
+      errorMessage = "未填写 API Key，已切换为模板回复。";
+    } else {
+      errorMessage = "AI 请求失败，已切换为模板回复。";
+    }
+    reply = buildTemplateReply({
+      pet: state.pet,
+      recentEvents: state.log.slice(-5).map((entry) => ({ type: entry.type, at: entry.at })),
+      lastUserMessage
+    });
+  }
   const eventLog = new EventLog(state.log);
   const log = eventLog.append({
     type: "CHAT",
     at,
-    payload: { message: lastUserMessage, reply: reply.text, suggestedActions: reply.suggestedActions }
+    payload: {
+      message: lastUserMessage,
+      reply: reply.text,
+      suggestedActions: reply.suggestedActions,
+      error: errorMessage || undefined
+    }
   });
 
   return {
     ...state,
-    message: reply.text,
+    message: errorMessage ? `${errorMessage} ${reply.text}` : reply.text,
     suggestedActions: reply.suggestedActions,
     log,
     lastInteractionAt: at
