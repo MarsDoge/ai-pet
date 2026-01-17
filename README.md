@@ -78,6 +78,48 @@ Key rule: **AI never mutates numeric state**. Only `pet-core` does.
 
 ---
 
+## Architecture diagram
+
+```mermaid
+flowchart TB
+  Web[apps/web\nUI & interactions] --> Memory[packages/pet-memory\nSaveData & EventLog]
+  Web --> Core[packages/pet-core\nDeterministic simulation]
+  Web --> AI[packages/pet-ai\nTemplates & adapters]
+  Core --> Shared[packages/shared\nTypes & utils]
+  Memory --> Shared
+  AI --> Shared
+
+  Web --> Storage[(localStorage / JSON export)]
+```
+
+---
+
+## Module responsibilities
+
+### `packages/pet-core`
+- Deterministic state model, events, reducers, and tick compensation.
+- Computes numeric deltas and enforces stat clamps.
+- Sole source of truth for gameplay rules.
+
+### `packages/pet-memory`
+- SaveData schema, version checks, and import validation.
+- KV storage and capped EventLog management.
+- Serialization for persistence and export/import.
+
+### `packages/pet-ai`
+- Template replies and LLM adapter interfaces.
+- Structured AI reply shape (text/tags/suggestions only).
+- Never mutates numeric state.
+
+### `apps/web`
+- UI components, event dispatch, and rendering.
+- Boot flow (load → tick compensate → render).
+- Local persistence, export/import, and auto-speak UX.
+
+### `packages/shared`
+- Cross-package types, utilities, and versioned contracts.
+---
+
 ## Roadmap
 
 ### V0.1

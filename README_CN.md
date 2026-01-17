@@ -78,6 +78,48 @@ docs/               # 规格与贡献者文档
 
 ---
 
+## 架构图
+
+```mermaid
+flowchart TB
+  Web[apps/web\nUI 与交互] --> Memory[packages/pet-memory\nSaveData 与 EventLog]
+  Web --> Core[packages/pet-core\n确定性模拟]
+  Web --> AI[packages/pet-ai\n模板与适配器]
+  Core --> Shared[packages/shared\n类型与工具]
+  Memory --> Shared
+  AI --> Shared
+
+  Web --> Storage[(localStorage / JSON 导出)]
+```
+
+---
+
+## 模块职责
+
+### `packages/pet-core`
+- 确定性状态模型、事件、reducer 与 tick 补偿。
+- 计算数值 delta 并强制范围 clamp。
+- 唯一的游戏规则来源。
+
+### `packages/pet-memory`
+- SaveData 结构、版本校验与导入修复。
+- KV 存储与 EventLog（200 条截断）。
+- 持久化与导出/导入序列化。
+
+### `packages/pet-ai`
+- 模板回复与 LLM 适配器接口。
+- 结构化 AI 回复（文本/标签/建议动作）。
+- 永不修改数值状态。
+
+### `apps/web`
+- UI 组件、事件派发与渲染。
+- 启动流程（load → tick 补偿 → render）。
+- 本地持久化、导出/导入与自动说话 UX。
+
+### `packages/shared`
+- 跨包公共类型与工具、版本化契约。
+---
+
 ## 路线图
 
 ### V0.1
