@@ -3,6 +3,7 @@
 ## Current focus
 - Keep CI green with install/test/build only (no artifact upload for now).
 - Ensure Pages deploys via static export with correct basePath.
+ - Validate AI provider wiring with real API keys when available.
 
 ## Recently completed
 - 2026-01-17: Completed pet-core, pet-memory, web (Milestone C), pet-ai (Milestone D), auto-speak (Milestone E).
@@ -15,10 +16,13 @@
 - 2026-01-17: Added item effects table and SaveData tests for new KV fields.
 - 2026-01-17: Added Settings panel for provider selection and quick actions.
 - 2026-01-17: GitHub Pages static export deployed with basePath fix.
+- 2026-01-17: Wired provider settings to chat with OpenAI-compatible adapter.
+- 2026-01-17: Added SaveData migration pipeline and tests.
 
 ## Upcoming
 - Verify Pages deployment URL and add to docs if needed.
 - Add API contract references into package READMEs and docs index.
+ - Consider provider-specific error handling and rate limit UX.
 
 ## Risks / decisions
 - CI must run `pnpm --filter ./apps/web build` to catch type errors early.
