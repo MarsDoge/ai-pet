@@ -7,7 +7,8 @@ This project is built with AI-assisted development and a document-first process.
 2. Split work into GitHub Issues.
 3. Implement code changes per Issue.
 4. Run tests (`pnpm -r test`).
-5. Update `docs/STATUS.md` with a brief summary.
+5. If `apps/web` changed, run `pnpm --filter ./apps/web build`.
+6. Update `docs/STATUS.md` with a brief summary.
 
 ## Issue hygiene
 - One Issue per change whenever possible.

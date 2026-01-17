@@ -15,6 +15,7 @@ Commands are documented in `README.md` and `docs/CODEX_RULES.md`:
 - `pnpm --filter ./apps/web dev` runs the web app locally.
 - `pnpm -r test` runs all package tests.
 - `pnpm -r lint` runs lint checks.
+- `pnpm --filter ./apps/web build` runs the production build (required before commits that touch `apps/web`).
 
 ## Coding Style & Naming Conventions
 - TypeScript only; keep functions small and pure with explicit inputs/outputs.
