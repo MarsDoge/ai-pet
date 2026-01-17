@@ -107,5 +107,4 @@ Key rule: **AI never mutates numeric state**. Only `pet-core` does.
 ---
 
 ## License
-MIT (or Apache-2.0) — choose one before first release.
-
+GPL-3.0
