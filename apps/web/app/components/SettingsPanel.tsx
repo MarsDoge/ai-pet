@@ -11,6 +11,12 @@ type SettingsPanelProps = {
   onSaveNow: () => void;
   onExport: () => string;
   onImport: (payload: string) => string | null;
+  panels: {
+    ai: boolean;
+    autoSpeak: boolean;
+    saveLoad: boolean;
+  };
+  onTogglePanel: (panel: keyof SettingsPanelProps["panels"]) => void;
 };
 
 const PROVIDER_LABELS: Record<SettingsPanelProps["provider"], string> = {
@@ -28,7 +34,9 @@ export function SettingsPanel({
   onToggleAutoSpeak,
   onSaveNow,
   onExport,
-  onImport
+  onImport,
+  panels,
+  onTogglePanel
 }: SettingsPanelProps) {
   const [status, setStatus] = useState<string | null>(null);
 
@@ -58,43 +66,64 @@ export function SettingsPanel({
     <section className="panel">
       <h2 className="section-title">设置</h2>
       <div style={{ display: "grid", gap: 12, marginTop: 12 }}>
-        <div style={{ display: "grid", gap: 6 }}>
-          <label className="subtle">AI 提供方</label>
-          <select
-            value={provider}
-            onChange={(event) => onProviderChange(event.target.value as SettingsPanelProps["provider"])}
-            style={{
-              padding: "10px 12px",
-              borderRadius: 12,
-              border: "1px solid var(--border)",
-              fontFamily: "inherit"
-            }}
-          >
-            {Object.entries(PROVIDER_LABELS).map(([key, label]) => (
-              <option key={key} value={key}>
-                {label}
-              </option>
-            ))}
-          </select>
+        <div>
+          <button className="action-button" type="button" onClick={() => onTogglePanel("ai")}>
+            {panels.ai ? "隐藏 AI 设置" : "显示 AI 设置"}
+          </button>
+          {panels.ai ? (
+            <div style={{ display: "grid", gap: 6, marginTop: 8 }}>
+              <label className="subtle">AI 提供方</label>
+              <select
+                value={provider}
+                onChange={(event) => onProviderChange(event.target.value as SettingsPanelProps["provider"])}
+                style={{
+                  padding: "10px 12px",
+                  borderRadius: 12,
+                  border: "1px solid var(--border)",
+                  fontFamily: "inherit"
+                }}
+              >
+                {Object.entries(PROVIDER_LABELS).map(([key, label]) => (
+                  <option key={key} value={key}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ) : null}
         </div>
 
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
-          <button className="action-button" type="button" onClick={() => onToggleAutoSpeak(!autoSpeakEnabled)}>
-            {autoSpeakEnabled ? "关闭自动说话" : "开启自动说话"}
+        <div>
+          <button className="action-button" type="button" onClick={() => onTogglePanel("autoSpeak")}>
+            {panels.autoSpeak ? "隐藏自动说话" : "显示自动说话"}
           </button>
-          <span className="subtle">今日自动说话 {autoSpeakCount} 次</span>
+          {panels.autoSpeak ? (
+            <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center", marginTop: 8 }}>
+              <button className="action-button" type="button" onClick={() => onToggleAutoSpeak(!autoSpeakEnabled)}>
+                {autoSpeakEnabled ? "关闭自动说话" : "开启自动说话"}
+              </button>
+              <span className="subtle">今日自动说话 {autoSpeakCount} 次</span>
+            </div>
+          ) : null}
         </div>
 
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          <button className="action-button" type="button" onClick={handleSave}>
-            快速保存
+        <div>
+          <button className="action-button" type="button" onClick={() => onTogglePanel("saveLoad")}>
+            {panels.saveLoad ? "隐藏存档工具" : "显示存档工具"}
           </button>
-          <button className="action-button" type="button" onClick={handleExport}>
-            复制 JSON
-          </button>
-          <button className="action-button" type="button" onClick={handleImport}>
-            快速导入
-          </button>
+          {panels.saveLoad ? (
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 8 }}>
+              <button className="action-button" type="button" onClick={handleSave}>
+                快速保存
+              </button>
+              <button className="action-button" type="button" onClick={handleExport}>
+                复制 JSON
+              </button>
+              <button className="action-button" type="button" onClick={handleImport}>
+                快速导入
+              </button>
+            </div>
+          ) : null}
         </div>
 
         {status ? <span className="subtle">{status}</span> : null}

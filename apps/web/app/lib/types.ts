@@ -17,6 +17,11 @@ export type AppState = {
   message: string;
   suggestedActions: SuggestedAction[];
   llmProvider: "none" | "openai" | "deepseek" | "ollama";
+  settingsPanels: {
+    ai: boolean;
+    autoSpeak: boolean;
+    saveLoad: boolean;
+  };
   autoSpeakEnabled: boolean;
   autoSpeakCount: number;
   autoSpeakDate: string;

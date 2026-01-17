@@ -130,6 +130,13 @@ export default function HomePage() {
             onSaveNow={handleSaveNow}
             onExport={handleExport}
             onImport={handleImport}
+            panels={state.settingsPanels}
+            onTogglePanel={(panel) =>
+              setState((prev) => ({
+                ...prev,
+                settingsPanels: { ...prev.settingsPanels, [panel]: !prev.settingsPanels[panel] }
+              }))
+            }
           />
           <Backpack items={state.inventory} onUse={handleUseItem} />
           <SaveLoadPanel

@@ -24,6 +24,7 @@ export function persistSaveData(state: AppState): void {
     {
       inventory: state.inventory,
       llmProvider: state.llmProvider,
+      settingsPanels: state.settingsPanels,
       autoSpeak: {
         enabled: state.autoSpeakEnabled,
         count: state.autoSpeakCount,
@@ -43,6 +44,7 @@ export function buildExportPayload(state: AppState): string {
     {
       inventory: state.inventory,
       llmProvider: state.llmProvider,
+      settingsPanels: state.settingsPanels,
       autoSpeak: {
         enabled: state.autoSpeakEnabled,
         count: state.autoSpeakCount,

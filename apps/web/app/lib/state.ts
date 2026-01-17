@@ -46,6 +46,11 @@ export function createInitialAppState(now: number): AppState {
     message: "我刚到哦，一起探索吧。",
     suggestedActions: [],
     llmProvider: "none",
+    settingsPanels: {
+      ai: true,
+      autoSpeak: true,
+      saveLoad: true
+    },
     autoSpeakEnabled: true,
     autoSpeakCount: 0,
     autoSpeakDate: today,
@@ -154,6 +159,19 @@ function hydrateProvider(raw: unknown): AppState["llmProvider"] {
   return "none";
 }
 
+function hydratePanels(raw: unknown): AppState["settingsPanels"] {
+  if (!raw || typeof raw !== "object") {
+    return { ai: true, autoSpeak: true, saveLoad: true };
+  }
+
+  const record = raw as Record<string, unknown>;
+  return {
+    ai: typeof record.ai === "boolean" ? record.ai : true,
+    autoSpeak: typeof record.autoSpeak === "boolean" ? record.autoSpeak : true,
+    saveLoad: typeof record.saveLoad === "boolean" ? record.saveLoad : true
+  };
+}
+
 function getTodayKey(now: number): string {
   return new Date(now).toISOString().slice(0, 10);
 }
@@ -177,6 +195,7 @@ function hydrateAutoSpeak(raw: unknown, now: number): AutoSpeakSettings {
 export function loadFromSaveData(save: SaveData, now: number): AppState {
   const inventory = hydrateInventory(save.kv?.inventory);
   const llmProvider = hydrateProvider(save.kv?.llmProvider);
+  const settingsPanels = hydratePanels(save.kv?.settingsPanels);
   const autoSpeak = hydrateAutoSpeak(save.kv?.autoSpeak, now);
   const base: AppState = {
     pet: { ...save.state, lastTickAt: save.state.lastTickAt ?? 0 },
@@ -185,6 +204,7 @@ export function loadFromSaveData(save: SaveData, now: number): AppState {
     message: "欢迎回来。",
     suggestedActions: [],
     llmProvider,
+    settingsPanels,
     autoSpeakEnabled: autoSpeak.enabled,
     autoSpeakCount: autoSpeak.date === getTodayKey(now) ? autoSpeak.count : 0,
     autoSpeakDate: getTodayKey(now),
