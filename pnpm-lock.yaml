@@ -17,6 +17,19 @@ importers:
         specifier: ^1.6.0
         version: 1.6.1
 
+  packages/pet-memory:
+    dependencies:
+      '@ai-pet/pet-core':
+        specifier: workspace:*
+        version: link:../pet-core
+    devDependencies:
+      typescript:
+        specifier: ^5.4.5
+        version: 5.9.3
+      vitest:
+        specifier: ^1.6.0
+        version: 1.6.1
+
 packages:
 
   /@esbuild/aix-ppc64@0.21.5:
