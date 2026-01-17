@@ -1,0 +1,199 @@
+issues:
+  - title: "Epic: Milestone A — pet-core (deterministic simulation)"
+    labels: ["type:chore", "area:core", "priority:P0"]
+    body: |
+      Implement deterministic simulation core: PetState, events, reducer, tick compensation, mood derivation, and tests. See `docs/DEV_SPEC.md`.
+      
+      DoD:
+      - `pnpm -r test` passes
+      - tick compensation tested (1h/6h/24h)
+      - action deltas tested
+  - title: "pet-core: Define PetState/Mood + clamp utilities"
+    labels: ["type:feat", "area:core", "priority:P0"]
+    body: |
+      Create shared types for PetState and Mood. Add clamp helpers and numeric range guards.
+      
+      DoD:
+      - Types exported via package entry
+      - Unit tests for clamp helpers
+  - title: "pet-core: Define CoreEvent types"
+    labels: ["type:feat", "area:core", "priority:P0"]
+    body: |
+      Define event union types for TICK/FEED/PET/BATH/SLEEP/PLAY/CHAT/BUY/EQUIP.
+      
+      DoD:
+      - Types exported
+      - Example event instances in tests
+  - title: "pet-core: Implement deriveMood() rules"
+    labels: ["type:feat", "area:core", "priority:P0"]
+    body: |
+      Implement deterministic mood derivation based on thresholds (energy/hunger/cleanliness/fun/idle).
+      
+      DoD:
+      - Boundary tests around thresholds
+  - title: "pet-core: Implement reduce() for actions"
+    labels: ["type:feat", "area:core", "priority:P0"]
+    body: |
+      Implement reducer for FEED/PET/BATH/SLEEP/PLAY/CHAT including delta output.
+      
+      DoD:
+      - Unit tests verifying deltas per action
+  - title: "pet-core: Implement level-up logic"
+    labels: ["type:feat", "area:core", "priority:P0"]
+    body: |
+      Implement nextLevelExp() and level-up loop.
+      
+      DoD:
+      - Tests for single and multiple level-ups
+  - title: "pet-core: Implement tick + tick compensation"
+    labels: ["type:feat", "area:core", "priority:P0"]
+    body: |
+      Implement tick changes and applyTickCompensation() at 10-min intervals.
+      
+      DoD:
+      - Tests for 1h/6h/24h compensation
+      - lastTickAt updates correctly
+  - title: "pet-core: Add TSDoc and public API exports"
+    labels: ["type:chore", "area:core", "priority:P1"]
+    body: |
+      Ensure clean package entrypoints and docs for reduce/applyTickCompensation/deriveMood.
+  - title: "Epic: Milestone B — pet-memory (save + logs)"
+    labels: ["type:chore", "area:memory", "priority:P0"]
+    body: |
+      Implement KV memory, event log (max 200), and SaveData import/export with version validation.
+  - title: "pet-memory: KV store get/set with patch merge"
+    labels: ["type:feat", "area:memory", "priority:P0"]
+    body: |
+      Implement KvMemory store with shallow merge patching.
+      
+      DoD:
+      - Unit tests for patch merge
+  - title: "pet-memory: EventLog append + truncate to 200"
+    labels: ["type:feat", "area:memory", "priority:P0"]
+    body: |
+      Append events and truncate oldest when exceeding 200.
+      
+      DoD:
+      - Unit test for truncation
+  - title: "pet-memory: SaveData export/import + version checks"
+    labels: ["type:feat", "area:memory", "priority:P0"]
+    body: |
+      Implement SaveData export/import with strict version validation.
+      
+      DoD:
+      - Roundtrip export/import unit test
+      - Reject non-0.1 versions
+  - title: "pet-memory: Import validator (clamp illegal fields)"
+    labels: ["type:feat", "area:memory", "priority:P1"]
+    body: |
+      Clamp out-of-range numeric fields into valid ranges during import.
+      
+      DoD:
+      - Unit tests for clamping
+  - title: "web storage: Persist SaveData (IndexedDB or localStorage)"
+    labels: ["type:feat", "area:web", "area:memory", "priority:P0"]
+    body: |
+      Implement persistence adapter used by web app.
+      
+      DoD:
+      - load/save APIs
+      - fallback strategy documented
+  - title: "Epic: Milestone C — web (playable without AI)"
+    labels: ["type:chore", "area:web", "priority:P0"]
+    body: |
+      Build playable web UI: floating pet, bubble, status panel, actions, inventory, save/load, tick compensation on load.
+  - title: "web: Initialize Next.js app (App Router)"
+    labels: ["type:chore", "area:web", "priority:P0"]
+    body: |
+      Scaffold apps/web with Next.js + TypeScript + basic layout.
+  - title: "web: Floating PetStage (drag around)"
+    labels: ["type:feat", "area:web", "priority:P0"]
+    body: |
+      Implement draggable floating pet layer anchored to corner.
+      
+      DoD:
+      - drag works
+      - position persisted (optional)
+  - title: "web: Speech Bubble component"
+    labels: ["type:feat", "area:web", "priority:P0"]
+    body: |
+      Implement bubble UI with auto-dismiss and emotion indicator.
+  - title: "web: StatusPanel (bars + level/coins)"
+    labels: ["type:feat", "area:web", "priority:P0"]
+    body: |
+      Render core stats as progress bars and show level/coins.
+  - title: "web: ActionBar (feed/pet/bath/chat/play/sleep)"
+    labels: ["type:feat", "area:web", "priority:P0"]
+    body: |
+      Wire action buttons to pet-core events and event log.
+      
+      DoD:
+      - >=4 actions functional
+      - event log entries include deltas
+  - title: "web: Backpack UI + item usage"
+    labels: ["type:feat", "area:web", "priority:P0"]
+    body: |
+      Display inventory and allow using food/toys.
+      
+      DoD:
+      - food reduces count and triggers FEED
+  - title: "web: Save/Load UI (export/import JSON)"
+    labels: ["type:feat", "area:web", "priority:P0"]
+    body: |
+      Provide export/import UI with validation and error messages.
+  - title: "web: App boot flow (load → tick compensate → render)"
+    labels: ["type:feat", "area:web", "priority:P0"]
+    body: |
+      On startup load SaveData, apply tick compensation, update UI.
+  - title: "Epic: Milestone D — pet-ai (optional LLM)"
+    labels: ["type:chore", "area:ai", "priority:P1"]
+    body: |
+      Implement pet AI layer: templates fallback, context builder, adapter interface, and one provider integration.
+  - title: "pet-ai: Templates fallback (no API key)"
+    labels: ["type:feat", "area:ai", "priority:P0"]
+    body: |
+      Implement templates for reply/auto-speak by mood/trigger.
+  - title: "pet-ai: Define AiReply + ContextSnapshot"
+    labels: ["type:feat", "area:ai", "priority:P1"]
+    body: |
+      Define structures used by AI layer and web.
+  - title: "pet-ai: LlmAdapter interface + mock"
+    labels: ["type:feat", "area:ai", "priority:P1"]
+    body: |
+      Implement adapter interface and mock for tests.
+  - title: "pet-ai: Provider adapter (OpenAI/DeepSeek/Ollama)"
+    labels: ["type:feat", "area:ai", "priority:P1"]
+    body: |
+      Implement one real provider adapter reading env vars; handle timeout; parse JSON output; fallback to text/templates.
+  - title: "web: ChatPanel wired to pet-ai"
+    labels: ["type:feat", "area:web", "area:ai", "priority:P1"]
+    body: |
+      Add minimal chat UI; on send, call pet-ai and show bubble.
+      
+      DoD:
+      - works in provider=none
+      - works with provider=api
+  - title: "Epic: Milestone E — auto-speak (controlled initiative)"
+    labels: ["type:chore", "area:web", "priority:P0"]
+    body: |
+      Add triggers, daily caps, and toggles for auto-speak; ensure all auto messages are logged.
+  - title: "auto-speak: Trigger detection (hungry/tired/dirty/idle)"
+    labels: ["type:feat", "area:web", "priority:P0"]
+    body: |
+      Detect triggers based on thresholds and idle time.
+  - title: "auto-speak: Daily cap + toggle"
+    labels: ["type:feat", "area:web", "area:memory", "priority:P0"]
+    body: |
+      Implement daily counter reset and user controls.
+  - title: "auto-speak: Log AUTO_SPEAK events"
+    labels: ["type:feat", "area:memory", "priority:P0"]
+    body: |
+      Append AUTO_SPEAK events for every auto message (no numeric delta).
+  - title: "docs: Add DEV_SPEC + CODEX_RULES + Architecture overview"
+    labels: ["type:chore", "area:docs", "priority:P1"]
+    body: |
+      Ensure docs exist and README links to them.
+  - title: "release: Add LICENSE + CONTRIBUTING + CHANGELOG"
+    labels: ["type:chore", "area:docs", "priority:P1"]
+    body: |
+      Prepare basic OSS metadata and contribution guide.
