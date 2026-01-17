@@ -23,6 +23,7 @@ export function persistSaveData(state: AppState): void {
     state.pet,
     {
       inventory: state.inventory,
+      llmProvider: state.llmProvider,
       autoSpeak: {
         enabled: state.autoSpeakEnabled,
         count: state.autoSpeakCount,
@@ -41,6 +42,7 @@ export function buildExportPayload(state: AppState): string {
     state.pet,
     {
       inventory: state.inventory,
+      llmProvider: state.llmProvider,
       autoSpeak: {
         enabled: state.autoSpeakEnabled,
         count: state.autoSpeakCount,

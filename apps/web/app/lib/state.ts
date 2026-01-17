@@ -45,6 +45,7 @@ export function createInitialAppState(now: number): AppState {
     inventory: DEFAULT_INVENTORY,
     message: "我刚到哦，一起探索吧。",
     suggestedActions: [],
+    llmProvider: "none",
     autoSpeakEnabled: true,
     autoSpeakCount: 0,
     autoSpeakDate: today,
@@ -148,6 +149,11 @@ type AutoSpeakSettings = {
   lastInteractionAt?: number;
 };
 
+function hydrateProvider(raw: unknown): AppState["llmProvider"] {
+  if (raw === "openai" || raw === "deepseek" || raw === "ollama") return raw;
+  return "none";
+}
+
 function getTodayKey(now: number): string {
   return new Date(now).toISOString().slice(0, 10);
 }
@@ -170,6 +176,7 @@ function hydrateAutoSpeak(raw: unknown, now: number): AutoSpeakSettings {
 
 export function loadFromSaveData(save: SaveData, now: number): AppState {
   const inventory = hydrateInventory(save.kv?.inventory);
+  const llmProvider = hydrateProvider(save.kv?.llmProvider);
   const autoSpeak = hydrateAutoSpeak(save.kv?.autoSpeak, now);
   const base: AppState = {
     pet: { ...save.state, lastTickAt: save.state.lastTickAt ?? 0 },
@@ -177,6 +184,7 @@ export function loadFromSaveData(save: SaveData, now: number): AppState {
     inventory,
     message: "欢迎回来。",
     suggestedActions: [],
+    llmProvider,
     autoSpeakEnabled: autoSpeak.enabled,
     autoSpeakCount: autoSpeak.date === getTodayKey(now) ? autoSpeak.count : 0,
     autoSpeakDate: getTodayKey(now),

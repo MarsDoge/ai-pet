@@ -14,11 +14,11 @@ import {
 } from "./lib/state";
 import type { AppState } from "./lib/types";
 import { ActionBar } from "./components/ActionBar";
-import { AutoSpeakPanel } from "./components/AutoSpeakPanel";
 import { Backpack } from "./components/Backpack";
 import { ChatPanel } from "./components/ChatPanel";
 import { PetStage } from "./components/PetStage";
 import { SaveLoadPanel } from "./components/SaveLoadPanel";
+import { SettingsPanel } from "./components/SettingsPanel";
 import { StatusPanel } from "./components/StatusPanel";
 
 export default function HomePage() {
@@ -121,10 +121,15 @@ export default function HomePage() {
             reply={state.message}
             suggestedActions={state.suggestedActions}
           />
-          <AutoSpeakPanel
-            enabled={state.autoSpeakEnabled}
-            count={state.autoSpeakCount}
-            onToggle={handleToggleAutoSpeak}
+          <SettingsPanel
+            provider={state.llmProvider}
+            onProviderChange={(provider) => setState((prev) => ({ ...prev, llmProvider: provider }))}
+            autoSpeakEnabled={state.autoSpeakEnabled}
+            autoSpeakCount={state.autoSpeakCount}
+            onToggleAutoSpeak={handleToggleAutoSpeak}
+            onSaveNow={handleSaveNow}
+            onExport={handleExport}
+            onImport={handleImport}
           />
           <Backpack items={state.inventory} onUse={handleUseItem} />
           <SaveLoadPanel

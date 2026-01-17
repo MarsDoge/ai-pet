@@ -16,6 +16,7 @@ export type AppState = {
   inventory: InventoryItem[];
   message: string;
   suggestedActions: SuggestedAction[];
+  llmProvider: "none" | "openai" | "deepseek" | "ollama";
   autoSpeakEnabled: boolean;
   autoSpeakCount: number;
   autoSpeakDate: string;
