@@ -1,4 +1,7 @@
+"use client";
+
 import type { EventLogEntry } from "@ai-pet/pet-memory";
+import { useMemo, useState } from "react";
 
 type NarrativePayload = {
   text?: string;
@@ -21,21 +24,95 @@ function getNarrative(entry: EventLogEntry): NarrativePayload | null {
 }
 
 export function NarrativeTimeline({ entries }: NarrativeTimelineProps) {
-  const narratives = entries
-    .map((entry) => ({ entry, payload: getNarrative(entry) }))
-    .filter((item) => item.payload?.text)
-    .slice(-8)
+  const [sourceFilter, setSourceFilter] = useState<"all" | "chat" | "auto_speak">("all");
+  const [tagFilter, setTagFilter] = useState<string>("全部");
+  const [limit, setLimit] = useState<number>(8);
+
+  const { narratives, tags } = useMemo(() => {
+    const all = entries
+      .map((entry) => ({ entry, payload: getNarrative(entry) }))
+      .filter((item) => item.payload?.text) as Array<{
+      entry: EventLogEntry;
+      payload: NarrativePayload;
+    }>;
+
+    const tagSet = new Set<string>();
+    for (const item of all) {
+      item.payload.tags?.forEach((tag) => tagSet.add(tag));
+    }
+
+    return {
+      narratives: all,
+      tags: ["全部", ...Array.from(tagSet)]
+    };
+  }, [entries]);
+
+  const filtered = narratives
+    .filter((item) => (sourceFilter === "all" ? true : item.payload.source === sourceFilter))
+    .filter((item) => (tagFilter === "全部" ? true : item.payload.tags?.includes(tagFilter)))
+    .slice(-limit)
     .reverse();
 
   return (
     <section className="panel soft">
       <h2 className="section-title">叙事时间线</h2>
       <p className="subtle">记录宠物的即时心声与互动片段。</p>
+      <div style={{ marginTop: 12, display: "flex", gap: 8, flexWrap: "wrap" }}>
+        <select
+          value={sourceFilter}
+          onChange={(event) => setSourceFilter(event.target.value as "all" | "chat" | "auto_speak")}
+          style={{
+            padding: "6px 10px",
+            borderRadius: 10,
+            border: "1px solid var(--border)",
+            background: "rgba(255, 255, 255, 0.9)",
+            fontFamily: "inherit"
+          }}
+        >
+          <option value="all">全部来源</option>
+          <option value="chat">对话片段</option>
+          <option value="auto_speak">自言自语</option>
+        </select>
+        <select
+          value={tagFilter}
+          onChange={(event) => setTagFilter(event.target.value)}
+          style={{
+            padding: "6px 10px",
+            borderRadius: 10,
+            border: "1px solid var(--border)",
+            background: "rgba(255, 255, 255, 0.9)",
+            fontFamily: "inherit"
+          }}
+        >
+          {tags.map((tag) => (
+            <option key={tag} value={tag}>
+              {tag}
+            </option>
+          ))}
+        </select>
+        <select
+          value={limit}
+          onChange={(event) => setLimit(Number(event.target.value))}
+          style={{
+            padding: "6px 10px",
+            borderRadius: 10,
+            border: "1px solid var(--border)",
+            background: "rgba(255, 255, 255, 0.9)",
+            fontFamily: "inherit"
+          }}
+        >
+          {[4, 8, 12, 20].map((value) => (
+            <option key={value} value={value}>
+              最近 {value} 条
+            </option>
+          ))}
+        </select>
+      </div>
       <div style={{ marginTop: 12, display: "grid", gap: 10 }}>
-        {narratives.length === 0 ? (
+        {filtered.length === 0 ? (
           <span className="subtle">还没有故事片段，先聊聊吧。</span>
         ) : (
-          narratives.map(({ entry, payload }) => (
+          filtered.map(({ entry, payload }) => (
             <div
               key={`${entry.at}-${payload?.text}`}
               style={{
