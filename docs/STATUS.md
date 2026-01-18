@@ -23,6 +23,7 @@
 - 2026-01-17: Added missing API key hint in settings panel.
 - 2026-01-17: Added provider error banner to avoid mixing errors into chat text.
 - 2026-01-17: Persisted provider error banner dismissal in SaveData.
+- 2026-01-17: Added docs index links, onboarding section, provider UX reset, and Pages output guard.
 
 ## Upcoming
 - Verify Pages deployment URL and add to docs if needed.
