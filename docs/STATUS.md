@@ -41,6 +41,8 @@
 - 2026-01-17: Drafted community contribution, content pack, plugin API, and AI governance docs.
 - 2026-01-17: Added sample content pack scaffold under packages/pet-content.
 - 2026-01-17: Refined main layout with tabs and collapsible goals/achievements.
+- 2026-01-17: Added 3D stage draft plan and linked in docs index.
+- 2026-01-17: Added 3D pet stage prototype using react-three-fiber.
 
 ## Upcoming
 - Verify Pages deployment URL and add to docs if needed.

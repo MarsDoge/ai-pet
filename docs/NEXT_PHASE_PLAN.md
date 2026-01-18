@@ -28,7 +28,11 @@
 - Add governance event log schema.
 - Ensure deterministic fallbacks.
 
-### E) Stability guard
+### E) 3D stage prototype
+- Draft 3D stage plan and acceptance.
+- Prototype a mood-driven 3D pet stage.
+
+### F) Stability guard
 - Keep Pages export guard.
 - Ensure provider fallback remains intact.
 

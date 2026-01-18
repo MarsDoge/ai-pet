@@ -231,6 +231,26 @@ button {
   overflow: hidden;
 }
 
+.pet-stage-3d {
+  padding: 18px;
+}
+
+.pet-canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.pet-stage-3d .speech-bubble {
+  position: absolute;
+  left: 24px;
+  top: 24px;
+  z-index: 2;
+}
+
+.pet-stage-3d .badge {
+  z-index: 2;
+}
+
 .pet-avatar {
   width: 120px;
   height: 120px;

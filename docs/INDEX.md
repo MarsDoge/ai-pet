@@ -14,6 +14,7 @@ Quick links to key documents.
 - `docs/PLUGIN_API.md`
 - `docs/CONTENT_PACK_SPEC.md`
 - `docs/COMMUNITY_CONTRIBUTING.md`
+- `docs/THREE_D_STAGE.md`
 
 ## Plans & status
 - `docs/EXECUTION_PLAN.zh-CN.md`

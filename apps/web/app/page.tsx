@@ -29,7 +29,7 @@ import { DailyGoals } from "./components/DailyGoals";
 import { GrowthLog } from "./components/GrowthLog";
 import { MemoryPanel } from "./components/MemoryPanel";
 import { NarrativeTimeline } from "./components/NarrativeTimeline";
-import { PetStage } from "./components/PetStage";
+import { PetStage3D } from "./components/PetStage3D";
 import { ProviderErrorBanner } from "./components/ProviderErrorBanner";
 import { SaveLoadPanel } from "./components/SaveLoadPanel";
 import { SettingsPanel } from "./components/SettingsPanel";
@@ -148,7 +148,7 @@ export default function HomePage() {
 
       <div className="app-shell">
         <div className="side-column stagger">
-          <PetStage moodLabel={moodLabel} message={state.message} />
+          <PetStage3D moodLabel={moodLabel} message={state.message} />
           <StatusPanel pet={state.pet} />
         </div>
 
