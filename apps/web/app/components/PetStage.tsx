@@ -9,15 +9,15 @@ type PetStageProps = {
 };
 
 export function PetStage({ moodLabel, message }: PetStageProps) {
-  const moodMap: Record<string, string> = {
-    HUNGRY: "饥饿",
-    TIRED: "困倦",
-    DIRTY: "脏了",
-    BORED: "无聊",
-    HAPPY: "开心",
-    CONTENT: "舒适"
+  const moodMeta: Record<string, { label: string; emoji: string; className: string }> = {
+    HUNGRY: { label: "饥饿", emoji: "🍪", className: "mood-hungry" },
+    TIRED: { label: "困倦", emoji: "😴", className: "mood-tired" },
+    DIRTY: { label: "脏了", emoji: "🫧", className: "mood-dirty" },
+    BORED: { label: "无聊", emoji: "😐", className: "mood-bored" },
+    HAPPY: { label: "开心", emoji: "😊", className: "mood-happy" },
+    CONTENT: { label: "舒适", emoji: "🙂", className: "mood-content" }
   };
-  const moodText = moodMap[moodLabel] ?? moodLabel;
+  const meta = moodMeta[moodLabel] ?? { label: moodLabel, emoji: "✨", className: "mood-content" };
   const stageRef = useRef<HTMLDivElement | null>(null);
   const [position, setPosition] = useState({ x: 140, y: 140 });
   const dragOffset = useRef({ x: 0, y: 0 });
@@ -58,11 +58,11 @@ export function PetStage({ moodLabel, message }: PetStageProps) {
   return (
     <div className="panel pet-stage fade-in" ref={stageRef}>
       <div className="badge" style={{ position: "absolute", right: 18, top: 18 }}>
-        心情 {moodText}
+        心情 {meta.label} {meta.emoji}
       </div>
       <SpeechBubble message={message} />
       <div
-        className="pet-avatar"
+        className={`pet-avatar ${meta.className}`}
         role="button"
         aria-label="拖动宠物"
         onPointerDown={handlePointerDown}

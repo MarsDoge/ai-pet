@@ -213,6 +213,48 @@ button {
   transform: translateX(-50%);
 }
 
+.pet-avatar.mood-happy .pet-mouth {
+  height: 14px;
+  border-radius: 0 0 24px 24px;
+}
+
+.pet-avatar.mood-content .pet-mouth {
+  height: 8px;
+  border-radius: 0 0 18px 18px;
+}
+
+.pet-avatar.mood-bored .pet-mouth {
+  height: 2px;
+  border: none;
+  background: #2f1f15;
+  border-radius: 2px;
+}
+
+.pet-avatar.mood-hungry .pet-mouth {
+  height: 14px;
+  border-radius: 12px;
+  border: 2px solid #2f1f15;
+  border-top: 2px solid #2f1f15;
+  background: #fbe6d6;
+}
+
+.pet-avatar.mood-tired .pet-eye {
+  height: 3px;
+  border-radius: 3px;
+  top: 24px;
+}
+
+.pet-avatar.mood-dirty .pet-face::after {
+  content: "";
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e2c6aa;
+}
+
 .speech-bubble {
   position: absolute;
   max-width: 240px;
