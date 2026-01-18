@@ -24,6 +24,7 @@ import { ActionBar } from "./components/ActionBar";
 import { ActionFeedback } from "./components/ActionFeedback";
 import { Backpack } from "./components/Backpack";
 import { ChatPanel } from "./components/ChatPanel";
+import { NarrativeTimeline } from "./components/NarrativeTimeline";
 import { PetStage } from "./components/PetStage";
 import { ProviderErrorBanner } from "./components/ProviderErrorBanner";
 import { SaveLoadPanel } from "./components/SaveLoadPanel";
@@ -154,6 +155,7 @@ export default function HomePage() {
             reply={state.message}
             suggestedActions={state.suggestedActions}
           />
+          <NarrativeTimeline entries={state.log} />
           <SettingsPanel
             provider={state.llmProvider}
             onProviderChange={(provider) => {

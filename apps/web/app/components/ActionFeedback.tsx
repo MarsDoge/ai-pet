@@ -58,7 +58,10 @@ function formatNote(entry: EventLogEntry) {
 }
 
 export function ActionFeedback({ entries }: ActionFeedbackProps) {
-  const recent = entries.slice(-8).reverse();
+  const recent = entries
+    .filter((entry) => entry.type !== "NARRATIVE")
+    .slice(-8)
+    .reverse();
 
   return (
     <section className="panel soft">

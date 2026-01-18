@@ -32,6 +32,7 @@
 - 2026-01-17: Added state-based action suggestions in status panel.
 - 2026-01-17: Added memory layering (short/long term) with SaveData migration.
 - 2026-01-17: Updated blueprint docs with core gameplay loop focus (Milestone G draft).
+- 2026-01-17: Added narrative timeline entries for chat and auto-speak.
 
 ## Upcoming
 - Verify Pages deployment URL and add to docs if needed.

@@ -112,6 +112,17 @@ type ProviderSettings = {
   model?: string;
 };
 
+type NarrativeSource = "chat" | "auto_speak";
+
+function buildNarrativeText(source: NarrativeSource, text: string): string {
+  const trimmed = text.trim().slice(0, 80);
+  if (!trimmed) return "";
+  if (source === "auto_speak") {
+    return `它自言自语：“${trimmed}”`;
+  }
+  return `它说：“${trimmed}”`;
+}
+
 export async function buildAiReply(
   state: AppState,
   providerSettings: ProviderSettings,
@@ -161,16 +172,32 @@ export async function applyChat(
     });
   }
   const eventLog = new EventLog(state.log);
-  const log = eventLog.append({
-    type: "CHAT",
-    at,
-    payload: {
-      message: lastUserMessage,
-      reply: reply.text,
-      suggestedActions: reply.suggestedActions,
-      error: errorMessage || undefined
-    }
-  });
+  const narrativeText = buildNarrativeText("chat", reply.text);
+  const log = eventLog.appendMany([
+    {
+      type: "CHAT",
+      at,
+      payload: {
+        message: lastUserMessage,
+        reply: reply.text,
+        suggestedActions: reply.suggestedActions,
+        error: errorMessage || undefined
+      }
+    },
+    ...(narrativeText
+      ? [
+          {
+            type: "NARRATIVE",
+            at,
+            payload: {
+              text: narrativeText,
+              tags: [reply.emotionTag],
+              source: "chat"
+            }
+          }
+        ]
+      : [])
+  ]);
   const memory = updateMemory(state.memory, at, lastUserMessage, reply.text, reply.memoryWrite);
 
   return {
@@ -452,11 +479,27 @@ export function applyAutoSpeak(
     recentEvents: normalized.log.slice(-5).map((entry) => ({ type: entry.type, at: entry.at }))
   });
   const eventLog = new EventLog(normalized.log);
-  const log = eventLog.append({
-    type: "AUTO_SPEAK",
-    at: now,
-    payload: { reason, text: AUTO_SPEAK_MESSAGES[reason], suggestedActions: reply.suggestedActions }
-  });
+  const narrativeText = buildNarrativeText("auto_speak", AUTO_SPEAK_MESSAGES[reason]);
+  const log = eventLog.appendMany([
+    {
+      type: "AUTO_SPEAK",
+      at: now,
+      payload: { reason, text: AUTO_SPEAK_MESSAGES[reason], suggestedActions: reply.suggestedActions }
+    },
+    ...(narrativeText
+      ? [
+          {
+            type: "NARRATIVE",
+            at: now,
+            payload: {
+              text: narrativeText,
+              tags: [reply.emotionTag],
+              source: "auto_speak"
+            }
+          }
+        ]
+      : [])
+  ]);
 
   return {
     ...normalized,
