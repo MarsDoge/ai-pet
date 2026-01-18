@@ -55,6 +55,8 @@ export function SettingsPanel({
 }: SettingsPanelProps) {
   const [status, setStatus] = useState<string | null>(null);
   const missingKey = provider !== "none" && providerKey.trim().length === 0;
+  const missingModel = provider !== "none" && providerModel.trim().length === 0;
+  const showOllamaHint = provider === "ollama" && providerBaseUrl.trim().length === 0;
 
   const handleExport = async () => {
     const payload = onExport();
@@ -156,6 +158,10 @@ export function SettingsPanel({
                   fontFamily: "inherit"
                 }}
               />
+              {missingModel ? <span className="subtle">建议填写 Model 以避免默认不匹配。</span> : null}
+              {showOllamaHint ? (
+                <span className="subtle">Ollama Base URL 示例：http://localhost:11434/v1</span>
+              ) : null}
               <Link className="subtle" href="/provider-setup/">
                 配置说明
               </Link>
