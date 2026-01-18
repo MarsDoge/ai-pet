@@ -31,6 +31,7 @@
 - 2026-01-17: Added mood-driven pet expression and emoji label.
 - 2026-01-17: Added state-based action suggestions in status panel.
 - 2026-01-17: Added memory layering (short/long term) with SaveData migration.
+- 2026-01-17: Updated blueprint docs with core gameplay loop focus (Milestone G draft).
 
 ## Upcoming
 - Verify Pages deployment URL and add to docs if needed.

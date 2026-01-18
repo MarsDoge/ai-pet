@@ -1,29 +1,29 @@
 # Next Phase Plan
 
 ## Goals (3–5 items)
-1. Stabilize AI provider UX and validation end-to-end.
-2. Improve docs discoverability and contributor onboarding.
-3. Ensure Pages deployment is reliable and documented.
+1. Close the core gameplay loop with visible feedback and rewards.
+2. Add layered memory + narrative timeline (text only, no numeric mutation).
+3. Keep release/docs/pages stability intact.
 
 ## Work packages
-### A) AI provider UX
-- Inline validation for required fields (API key, model).
-- Error banner behavior (dismiss + reset on new attempts).
-- Provider setup doc link surfaced in UI.
+### A) Core gameplay loop
+- Action feedback panel + state-based hints.
+- Lightweight daily goals with small rewards (no rule changes).
+- Clear visual feedback after each action.
 
-### B) Docs & onboarding
-- Keep docs index updated (add provider setup, release checklist).
-- Add a short onboarding section in README/README_CN.
+### B) Memory & narrative
+- Layered memory in SaveData (short/long term).
+- Narrative timeline events stored in EventLog payload.
+- UI surface for replaying narrative beats.
 
-### C) Pages reliability
-- Verify deployment URL and add a health note in README/README_CN.
-- Add a CI guard that checks Pages build output exists (optional).
+### C) Stability guard
+- Keep Pages export guard.
+- Ensure provider fallback remains intact.
 
 ## Sequence
-1. Docs (index + onboarding) -> UI (provider UX) -> CI/Pages guard.
+1. Memory layer -> narrative timeline -> gameplay loop polish.
 
 ## Acceptance checklist
 - Web build passes.
-- Provider errors are visible and actionable.
-- Docs index links are complete.
-- Pages URL confirmed and documented.
+- Memory/narrative storage is deterministic and safe.
+- Gameplay loop is visible (feedback + hints + goals).
