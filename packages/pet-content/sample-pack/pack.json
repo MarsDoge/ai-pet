@@ -1,0 +1,29 @@
+{
+  "id": "sample-pack",
+  "name": "Sample Pack",
+  "version": "0.1.0",
+  "author": "community",
+  "compatible": ["web"],
+  "skins": [
+    {
+      "id": "sunrise",
+      "label": "晨光",
+      "asset": "assets/sunrise.txt"
+    }
+  ],
+  "stories": [
+    {
+      "id": "warm-morning",
+      "text": "今天的阳光很温柔，我们一起醒来。",
+      "tags": ["CONTENT"]
+    }
+  ],
+  "achievements": [
+    {
+      "id": "badge-3",
+      "title": "坚持三天",
+      "target": 3,
+      "kind": "badges"
+    }
+  ]
+}

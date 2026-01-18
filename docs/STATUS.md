@@ -39,6 +39,7 @@
 - 2026-01-17: Added narrative timeline filters for source, tags, and limit.
 - 2026-01-17: Added achievements panel with milestone claims.
 - 2026-01-17: Drafted community contribution, content pack, plugin API, and AI governance docs.
+- 2026-01-17: Added sample content pack scaffold under packages/pet-content.
 
 ## Upcoming
 - Verify Pages deployment URL and add to docs if needed.

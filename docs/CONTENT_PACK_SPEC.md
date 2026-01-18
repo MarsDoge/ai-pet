@@ -5,6 +5,7 @@ Content packs allow community members to add skins, actions, narratives, and ach
 ## Folder Layout
 - `packages/pet-content/<pack-id>/pack.json`
 - `packages/pet-content/<pack-id>/assets/*`
+  - Example: `packages/pet-content/sample-pack/`
 
 ## pack.json (Minimum)
 ```json
