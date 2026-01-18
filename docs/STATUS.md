@@ -35,6 +35,7 @@
 - 2026-01-17: Added narrative timeline entries for chat and auto-speak.
 - 2026-01-17: Added daily goals panel with badge claim tracking.
 - 2026-01-17: Added memory review panel for short/long term memory.
+- 2026-01-17: Added growth log panel with daily summaries.
 
 ## Upcoming
 - Verify Pages deployment URL and add to docs if needed.

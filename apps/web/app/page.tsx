@@ -25,6 +25,7 @@ import { ActionFeedback } from "./components/ActionFeedback";
 import { Backpack } from "./components/Backpack";
 import { ChatPanel } from "./components/ChatPanel";
 import { DailyGoals } from "./components/DailyGoals";
+import { GrowthLog } from "./components/GrowthLog";
 import { MemoryPanel } from "./components/MemoryPanel";
 import { NarrativeTimeline } from "./components/NarrativeTimeline";
 import { PetStage } from "./components/PetStage";
@@ -163,6 +164,7 @@ export default function HomePage() {
               )
             }
           />
+          <GrowthLog entries={state.log} claimedDates={state.dailyBadges} />
           <ChatPanel
             onSend={handleChatSend}
             reply={state.message}
