@@ -154,6 +154,12 @@ flowchart TB
   - `area:core`, `area:memory`, `area:ai`, `area:web`, `area:docs`, `area:ci`
 - PRs should include tests for `pet-core`/`pet-memory` changes.
 
+## Community & Governance
+
+- Community content is welcomed via content packs and plugins.
+- AI governance is used for conflict resolution and scheduling (text-only).
+- Deterministic rules always live in `pet-core` and never change via AI.
+
 ## Onboarding
 
 Start here:

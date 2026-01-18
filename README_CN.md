@@ -154,6 +154,12 @@ flowchart TB
   - `area:core`, `area:memory`, `area:ai`, `area:web`, `area:docs`, `area:ci`
 - 涉及 `pet-core`/`pet-memory` 的改动必须附带测试
 
+## 社区与治理
+
+- 社区可通过内容包与插件贡献玩法与素材。
+- AI 负责内容冲突裁决与优先级调度（文本层）。
+- 数值规则只在 `pet-core` 中维护，AI 不得修改。
+
 ## 新人入门
 
 建议先读：

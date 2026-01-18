@@ -38,6 +38,7 @@
 - 2026-01-17: Added growth log panel with daily summaries.
 - 2026-01-17: Added narrative timeline filters for source, tags, and limit.
 - 2026-01-17: Added achievements panel with milestone claims.
+- 2026-01-17: Drafted community contribution, content pack, plugin API, and AI governance docs.
 
 ## Upcoming
 - Verify Pages deployment URL and add to docs if needed.

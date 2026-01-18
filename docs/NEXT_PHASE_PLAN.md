@@ -3,7 +3,9 @@
 ## Goals (3–5 items)
 1. Close the core gameplay loop with visible feedback and rewards.
 2. Add layered memory + narrative timeline (text only, no numeric mutation).
-3. Keep release/docs/pages stability intact.
+3. Enable community contribution via content packs and plugins.
+4. Define AI governance boundaries for community decisions.
+5. Keep release/docs/pages stability intact.
 
 ## Work packages
 ### A) Core gameplay loop
@@ -16,14 +18,26 @@
 - Narrative timeline events stored in EventLog payload.
 - UI surface for replaying narrative beats.
 
-### C) Stability guard
+### C) Community expansion
+- Content pack spec and examples.
+- Plugin API draft with safety constraints.
+- Contributor pathways by skill level.
+
+### D) AI governance
+- Define decision scope and logging.
+- Add governance event log schema.
+- Ensure deterministic fallbacks.
+
+### E) Stability guard
 - Keep Pages export guard.
 - Ensure provider fallback remains intact.
 
 ## Sequence
 1. Memory layer -> narrative timeline -> gameplay loop polish.
+2. Content pack spec -> plugin API draft -> governance logging.
 
 ## Acceptance checklist
 - Web build passes.
 - Memory/narrative storage is deterministic and safe.
 - Gameplay loop is visible (feedback + hints + goals).
+- Community contributions have clear specs and boundaries.

@@ -10,6 +10,10 @@ Quick links to key documents.
 - `docs/CODEX_RULES.md`
 - `docs/PROVIDER_SETUP.md`
 - `docs/RELEASE_CHECKLIST.md`
+- `docs/AI_GOVERNANCE.md`
+- `docs/PLUGIN_API.md`
+- `docs/CONTENT_PACK_SPEC.md`
+- `docs/COMMUNITY_CONTRIBUTING.md`
 
 ## Plans & status
 - `docs/EXECUTION_PLAN.zh-CN.md`
