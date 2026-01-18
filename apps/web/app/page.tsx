@@ -21,6 +21,7 @@ import {
 } from "./lib/state";
 import type { AppState } from "./lib/types";
 import { ActionBar } from "./components/ActionBar";
+import { ActionFeedback } from "./components/ActionFeedback";
 import { Backpack } from "./components/Backpack";
 import { ChatPanel } from "./components/ChatPanel";
 import { PetStage } from "./components/PetStage";
@@ -147,6 +148,7 @@ export default function HomePage() {
 
         <div className="stagger" style={{ display: "grid", gap: 24 }}>
           <ActionBar onAction={handleAction} />
+          <ActionFeedback entries={state.log} />
           <ChatPanel
             onSend={handleChatSend}
             reply={state.message}
