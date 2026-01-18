@@ -57,6 +57,7 @@ export function createInitialAppState(now: number): AppState {
     },
     memory: createDefaultMemory(),
     dailyBadges: [],
+    achievements: [],
     providerErrorDismissedAt: undefined,
     autoSpeakEnabled: true,
     autoSpeakCount: 0,
@@ -395,6 +396,11 @@ function hydrateDailyBadges(raw: unknown): string[] {
   return raw.filter((item) => typeof item === "string");
 }
 
+function hydrateAchievements(raw: unknown): string[] {
+  if (!Array.isArray(raw)) return [];
+  return raw.filter((item) => typeof item === "string");
+}
+
 export function loadFromSaveData(save: SaveData, now: number): AppState {
   const inventory = hydrateInventory(save.kv?.inventory);
   const llmProvider = hydrateProvider(save.kv?.llmProvider);
@@ -402,6 +408,7 @@ export function loadFromSaveData(save: SaveData, now: number): AppState {
   const autoSpeak = hydrateAutoSpeak(save.kv?.autoSpeak, now);
   const memory = hydrateMemory(save.kv?.memory);
   const dailyBadges = hydrateDailyBadges(save.kv?.dailyBadges);
+  const achievements = hydrateAchievements(save.kv?.achievements);
   const base: AppState = {
     pet: { ...save.state, lastTickAt: save.state.lastTickAt ?? 0 },
     log: save.log ?? [],
@@ -412,6 +419,7 @@ export function loadFromSaveData(save: SaveData, now: number): AppState {
     settingsPanels,
     memory,
     dailyBadges,
+    achievements,
     providerErrorDismissedAt:
       typeof save.kv?.providerErrorDismissedAt === "number"
         ? save.kv.providerErrorDismissedAt

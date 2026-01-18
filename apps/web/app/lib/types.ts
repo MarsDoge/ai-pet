@@ -43,6 +43,7 @@ export type AppState = {
   };
   memory: MemoryState;
   dailyBadges: string[];
+  achievements: string[];
   autoSpeakEnabled: boolean;
   autoSpeakCount: number;
   autoSpeakDate: string;

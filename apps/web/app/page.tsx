@@ -22,6 +22,7 @@ import {
 import type { AppState } from "./lib/types";
 import { ActionBar } from "./components/ActionBar";
 import { ActionFeedback } from "./components/ActionFeedback";
+import { AchievementsPanel } from "./components/AchievementsPanel";
 import { Backpack } from "./components/Backpack";
 import { ChatPanel } from "./components/ChatPanel";
 import { DailyGoals } from "./components/DailyGoals";
@@ -161,6 +162,18 @@ export default function HomePage() {
                 prev.dailyBadges.includes(dateKey)
                   ? prev
                   : { ...prev, dailyBadges: [...prev.dailyBadges, dateKey] }
+              )
+            }
+          />
+          <AchievementsPanel
+            entries={state.log}
+            badgeDates={state.dailyBadges}
+            claimed={state.achievements}
+            onClaim={(id) =>
+              setState((prev) =>
+                prev.achievements.includes(id)
+                  ? prev
+                  : { ...prev, achievements: [...prev.achievements, id] }
               )
             }
           />

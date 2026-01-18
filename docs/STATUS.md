@@ -37,6 +37,7 @@
 - 2026-01-17: Added memory review panel for short/long term memory.
 - 2026-01-17: Added growth log panel with daily summaries.
 - 2026-01-17: Added narrative timeline filters for source, tags, and limit.
+- 2026-01-17: Added achievements panel with milestone claims.
 
 ## Upcoming
 - Verify Pages deployment URL and add to docs if needed.
