@@ -60,6 +60,7 @@ export function persistSaveData(state: AppState): void {
       llmProvider: state.llmProvider,
       settingsPanels: state.settingsPanels,
       providerErrorDismissedAt: state.providerErrorDismissedAt,
+      memory: state.memory,
       autoSpeak: {
         enabled: state.autoSpeakEnabled,
         count: state.autoSpeakCount,
@@ -81,6 +82,7 @@ export function buildExportPayload(state: AppState): string {
       llmProvider: state.llmProvider,
       settingsPanels: state.settingsPanels,
       providerErrorDismissedAt: state.providerErrorDismissedAt,
+      memory: state.memory,
       autoSpeak: {
         enabled: state.autoSpeakEnabled,
         count: state.autoSpeakCount,

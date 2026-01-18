@@ -10,6 +10,23 @@ export type InventoryItem = {
   quantity: number;
 };
 
+export type MemoryEntry = {
+  at: number;
+  role: "user" | "pet";
+  text: string;
+};
+
+export type LongTermMemory = {
+  profile: string;
+  preferences: string[];
+  notes: Record<string, string>;
+};
+
+export type MemoryState = {
+  shortTerm: MemoryEntry[];
+  longTerm: LongTermMemory;
+};
+
 export type AppState = {
   pet: PetState;
   log: EventLogEntry[];
@@ -24,6 +41,7 @@ export type AppState = {
     autoSpeak: boolean;
     saveLoad: boolean;
   };
+  memory: MemoryState;
   autoSpeakEnabled: boolean;
   autoSpeakCount: number;
   autoSpeakDate: string;

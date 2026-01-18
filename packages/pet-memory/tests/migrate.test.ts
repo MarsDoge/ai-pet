@@ -33,4 +33,24 @@ describe("migrateSaveData", () => {
     expect(result.migrated).toBe(true);
     expect(result.fromVersion).toBe(CURRENT_SAVE_VERSION);
   });
+
+  it("adds default memory structure when missing or invalid", () => {
+    const dirty = {
+      ...baseSave,
+      kv: {
+        memory: {
+          shortTerm: [{ at: "bad", role: "user", text: 123 }],
+          longTerm: { profile: 123, preferences: ["cats", 1], notes: { mood: "happy", bad: 1 } }
+        }
+      }
+    };
+
+    const result = migrateSaveData(dirty);
+    const memory = result.save.kv.memory as { shortTerm: Array<unknown>; longTerm: Record<string, unknown> };
+
+    expect(memory.shortTerm).toHaveLength(0);
+    expect(memory.longTerm.profile).toBe("");
+    expect(memory.longTerm.preferences).toEqual(["cats"]);
+    expect(memory.longTerm.notes).toEqual({ mood: "happy" });
+  });
 });

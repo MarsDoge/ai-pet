@@ -18,7 +18,7 @@ import {
   AUTO_SPEAK_LIMIT,
   DEFAULT_INVENTORY
 } from "./constants";
-import type { AppState, InventoryItem } from "./types";
+import type { AppState, InventoryItem, MemoryEntry, MemoryState } from "./types";
 
 export function hydrateInventory(raw: unknown): InventoryItem[] {
   if (!Array.isArray(raw)) return DEFAULT_INVENTORY;
@@ -55,6 +55,7 @@ export function createInitialAppState(now: number): AppState {
       autoSpeak: true,
       saveLoad: true
     },
+    memory: createDefaultMemory(),
     providerErrorDismissedAt: undefined,
     autoSpeakEnabled: true,
     autoSpeakCount: 0,
@@ -170,12 +171,14 @@ export async function applyChat(
       error: errorMessage || undefined
     }
   });
+  const memory = updateMemory(state.memory, at, lastUserMessage, reply.text, reply.memoryWrite);
 
   return {
     ...state,
     message: reply.text,
     providerError: errorMessage || undefined,
     suggestedActions: reply.suggestedActions,
+    memory,
     log,
     lastInteractionAt: at
   };
@@ -251,11 +254,120 @@ function hydrateAutoSpeak(raw: unknown, now: number): AutoSpeakSettings {
   return { enabled, count, date, lastAutoSpeakAt, lastInteractionAt };
 }
 
+function createDefaultMemory(): MemoryState {
+  return {
+    shortTerm: [],
+    longTerm: {
+      profile: "",
+      preferences: [],
+      notes: {}
+    }
+  };
+}
+
+function sanitizeMemoryEntry(raw: unknown): MemoryEntry | null {
+  if (!raw || typeof raw !== "object") return null;
+  const record = raw as Record<string, unknown>;
+  const at = typeof record.at === "number" ? record.at : NaN;
+  const role = record.role === "user" || record.role === "pet" ? record.role : null;
+  const text = typeof record.text === "string" ? record.text : "";
+  if (!Number.isFinite(at) || !role || !text) return null;
+  return { at, role, text };
+}
+
+function hydrateMemory(raw: unknown): MemoryState {
+  if (!raw || typeof raw !== "object") return createDefaultMemory();
+  const record = raw as Record<string, unknown>;
+  const shortTermRaw = Array.isArray(record.shortTerm) ? record.shortTerm : [];
+  const shortTerm = shortTermRaw
+    .map(sanitizeMemoryEntry)
+    .filter(Boolean)
+    .slice(-20) as MemoryEntry[];
+  const longTermRaw = record.longTerm && typeof record.longTerm === "object"
+    ? (record.longTerm as Record<string, unknown>)
+    : {};
+  const profile = typeof longTermRaw.profile === "string" ? longTermRaw.profile : "";
+  const preferences = Array.isArray(longTermRaw.preferences)
+    ? longTermRaw.preferences.filter((item) => typeof item === "string")
+    : [];
+  const notesRaw = longTermRaw.notes && typeof longTermRaw.notes === "object"
+    ? (longTermRaw.notes as Record<string, unknown>)
+    : {};
+  const notes: Record<string, string> = {};
+  for (const [key, value] of Object.entries(notesRaw)) {
+    if (typeof value === "string") notes[key] = value;
+  }
+
+  return {
+    shortTerm,
+    longTerm: {
+      profile,
+      preferences,
+      notes
+    }
+  };
+}
+
+function normalizeMemoryWrite(
+  memory: MemoryState,
+  memoryWrite?: Record<string, unknown>
+): MemoryState {
+  if (!memoryWrite) return memory;
+  const next = {
+    ...memory,
+    longTerm: {
+      ...memory.longTerm,
+      notes: { ...memory.longTerm.notes }
+    }
+  };
+
+  for (const [key, value] of Object.entries(memoryWrite)) {
+    if (typeof value === "string") {
+      next.longTerm.notes[key] = value;
+      continue;
+    }
+    if (typeof value === "number" || typeof value === "boolean") {
+      next.longTerm.notes[key] = String(value);
+      continue;
+    }
+    if (Array.isArray(value) && value.every((item) => typeof item === "string")) {
+      next.longTerm.preferences = Array.from(new Set([...next.longTerm.preferences, ...value]));
+      continue;
+    }
+    try {
+      next.longTerm.notes[key] = JSON.stringify(value);
+    } catch {
+      next.longTerm.notes[key] = String(value);
+    }
+  }
+
+  return next;
+}
+
+function updateMemory(
+  memory: MemoryState,
+  at: number,
+  lastUserMessage: string | undefined,
+  replyText: string,
+  memoryWrite?: Record<string, unknown>
+): MemoryState {
+  const entries: MemoryEntry[] = [];
+  if (lastUserMessage && lastUserMessage.trim()) {
+    entries.push({ at, role: "user", text: lastUserMessage.trim() });
+  }
+  if (replyText && replyText.trim()) {
+    entries.push({ at, role: "pet", text: replyText.trim() });
+  }
+  const shortTerm = [...memory.shortTerm, ...entries].slice(-20);
+  return normalizeMemoryWrite({ ...memory, shortTerm }, memoryWrite);
+}
+
 export function loadFromSaveData(save: SaveData, now: number): AppState {
   const inventory = hydrateInventory(save.kv?.inventory);
   const llmProvider = hydrateProvider(save.kv?.llmProvider);
   const settingsPanels = hydratePanels(save.kv?.settingsPanels);
   const autoSpeak = hydrateAutoSpeak(save.kv?.autoSpeak, now);
+  const memory = hydrateMemory(save.kv?.memory);
   const base: AppState = {
     pet: { ...save.state, lastTickAt: save.state.lastTickAt ?? 0 },
     log: save.log ?? [],
@@ -264,6 +376,7 @@ export function loadFromSaveData(save: SaveData, now: number): AppState {
     suggestedActions: [],
     llmProvider,
     settingsPanels,
+    memory,
     providerErrorDismissedAt:
       typeof save.kv?.providerErrorDismissedAt === "number"
         ? save.kv.providerErrorDismissedAt
