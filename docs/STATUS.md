@@ -34,6 +34,7 @@
 - 2026-01-17: Updated blueprint docs with core gameplay loop focus (Milestone G draft).
 - 2026-01-17: Added narrative timeline entries for chat and auto-speak.
 - 2026-01-17: Added daily goals panel with badge claim tracking.
+- 2026-01-17: Added memory review panel for short/long term memory.
 
 ## Upcoming
 - Verify Pages deployment URL and add to docs if needed.

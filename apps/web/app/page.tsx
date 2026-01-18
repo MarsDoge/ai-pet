@@ -25,6 +25,7 @@ import { ActionFeedback } from "./components/ActionFeedback";
 import { Backpack } from "./components/Backpack";
 import { ChatPanel } from "./components/ChatPanel";
 import { DailyGoals } from "./components/DailyGoals";
+import { MemoryPanel } from "./components/MemoryPanel";
 import { NarrativeTimeline } from "./components/NarrativeTimeline";
 import { PetStage } from "./components/PetStage";
 import { ProviderErrorBanner } from "./components/ProviderErrorBanner";
@@ -168,6 +169,7 @@ export default function HomePage() {
             suggestedActions={state.suggestedActions}
           />
           <NarrativeTimeline entries={state.log} />
+          <MemoryPanel memory={state.memory} />
           <SettingsPanel
             provider={state.llmProvider}
             onProviderChange={(provider) => {
