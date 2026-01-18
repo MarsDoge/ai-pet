@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 type SettingsPanelProps = {
@@ -155,9 +156,9 @@ export function SettingsPanel({
                   fontFamily: "inherit"
                 }}
               />
-              <a className="subtle" href="https://marsdoge.github.io/ai-pet/PROVIDER_SETUP.html">
-                配置说明（在线）
-              </a>
+              <Link className="subtle" href="/provider-setup/">
+                配置说明
+              </Link>
             </div>
           ) : null}
         </div>
