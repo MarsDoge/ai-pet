@@ -39,6 +39,7 @@ export default function HomePage() {
   const [state, setState] = useState<AppState>(() => createInitialAppState(Date.now()));
   const [hydrated, setHydrated] = useState(false);
   const [providerSettings, setProviderSettings] = useState(() => loadProviderSettings());
+  const [storyTab, setStoryTab] = useState<"feedback" | "narrative" | "growth" | "memory">("feedback");
 
   useEffect(() => {
     const now = Date.now();
@@ -146,45 +147,74 @@ export default function HomePage() {
       />
 
       <div className="app-shell">
-        <div className="stagger" style={{ display: "grid", gap: 24 }}>
+        <div className="side-column stagger">
           <PetStage moodLabel={moodLabel} message={state.message} />
           <StatusPanel pet={state.pet} />
         </div>
 
-        <div className="stagger" style={{ display: "grid", gap: 24 }}>
+        <div className="main-column stagger">
           <ActionBar onAction={handleAction} />
-          <ActionFeedback entries={state.log} />
-          <DailyGoals
-            entries={state.log}
-            claimedDates={state.dailyBadges}
-            onClaim={(dateKey) =>
-              setState((prev) =>
-                prev.dailyBadges.includes(dateKey)
-                  ? prev
-                  : { ...prev, dailyBadges: [...prev.dailyBadges, dateKey] }
-              )
-            }
-          />
-          <AchievementsPanel
-            entries={state.log}
-            badgeDates={state.dailyBadges}
-            claimed={state.achievements}
-            onClaim={(id) =>
-              setState((prev) =>
-                prev.achievements.includes(id)
-                  ? prev
-                  : { ...prev, achievements: [...prev.achievements, id] }
-              )
-            }
-          />
-          <GrowthLog entries={state.log} claimedDates={state.dailyBadges} />
           <ChatPanel
             onSend={handleChatSend}
             reply={state.message}
             suggestedActions={state.suggestedActions}
           />
-          <NarrativeTimeline entries={state.log} />
-          <MemoryPanel memory={state.memory} />
+          <div className="tab-bar panel soft">
+            {[
+              { id: "feedback", label: "行动反馈" },
+              { id: "narrative", label: "叙事时间线" },
+              { id: "growth", label: "成长记录" },
+              { id: "memory", label: "记忆回顾" }
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                type="button"
+                className={`tab-button ${storyTab === tab.id ? "active" : ""}`}
+                onClick={() => setStoryTab(tab.id as typeof storyTab)}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+          <div className="tab-content">
+            {storyTab === "feedback" ? <ActionFeedback entries={state.log} /> : null}
+            {storyTab === "narrative" ? <NarrativeTimeline entries={state.log} /> : null}
+            {storyTab === "growth" ? <GrowthLog entries={state.log} claimedDates={state.dailyBadges} /> : null}
+            {storyTab === "memory" ? <MemoryPanel memory={state.memory} /> : null}
+          </div>
+          <details className="panel soft collapsible">
+            <summary>每日目标</summary>
+            <div className="collapsible-body">
+              <DailyGoals
+                entries={state.log}
+                claimedDates={state.dailyBadges}
+                onClaim={(dateKey) =>
+                  setState((prev) =>
+                    prev.dailyBadges.includes(dateKey)
+                      ? prev
+                      : { ...prev, dailyBadges: [...prev.dailyBadges, dateKey] }
+                  )
+                }
+              />
+            </div>
+          </details>
+          <details className="panel soft collapsible">
+            <summary>成就墙</summary>
+            <div className="collapsible-body">
+              <AchievementsPanel
+                entries={state.log}
+                badgeDates={state.dailyBadges}
+                claimed={state.achievements}
+                onClaim={(id) =>
+                  setState((prev) =>
+                    prev.achievements.includes(id)
+                      ? prev
+                      : { ...prev, achievements: [...prev.achievements, id] }
+                  )
+                }
+              />
+            </div>
+          </details>
           <SettingsPanel
             provider={state.llmProvider}
             onProviderChange={(provider) => {

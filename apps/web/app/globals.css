@@ -71,6 +71,12 @@ button {
   }
 }
 
+.side-column,
+.main-column {
+  display: grid;
+  gap: 20px;
+}
+
 .panel {
   background: var(--card);
   border: 1px solid var(--border);
@@ -104,6 +110,73 @@ button {
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+}
+
+.tab-bar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 12px;
+}
+
+.tab-button {
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.6);
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+
+.tab-button.active {
+  background: var(--accent-1);
+  color: #fff;
+  border-color: transparent;
+}
+
+.tab-content .panel {
+  box-shadow: none;
+  background: rgba(255, 250, 244, 0.7);
+}
+
+.tab-content .section-title {
+  display: none;
+}
+
+.tab-content .subtle {
+  font-size: 12px;
+}
+
+.collapsible {
+  padding: 0;
+}
+
+.collapsible summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 14px 18px;
+  font-family: var(--font-serif);
+  font-size: 18px;
+}
+
+.collapsible summary::-webkit-details-marker {
+  display: none;
+}
+
+.collapsible .collapsible-body {
+  padding: 0 18px 18px;
+}
+
+.collapsible .panel {
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  background: transparent;
+}
+
+.collapsible .section-title {
+  display: none;
 }
 
 .fade-in {
