@@ -25,6 +25,8 @@
 - 2026-01-17: Persisted provider error banner dismissal in SaveData.
 - 2026-01-17: Added docs index links, onboarding section, provider UX reset, and Pages output guard.
 - 2026-01-17: Added provider setup page and linked it from settings.
+- 2026-01-17: Added provider model and base URL hints in settings.
+- 2026-01-17: Consolidated Milestone F follow-ups (#70-#73) for docs, provider UX, Pages, and CI guard.
 
 ## Upcoming
 - Verify Pages deployment URL and add to docs if needed.
