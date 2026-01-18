@@ -56,6 +56,7 @@ export function createInitialAppState(now: number): AppState {
       saveLoad: true
     },
     memory: createDefaultMemory(),
+    dailyBadges: [],
     providerErrorDismissedAt: undefined,
     autoSpeakEnabled: true,
     autoSpeakCount: 0,
@@ -389,12 +390,18 @@ function updateMemory(
   return normalizeMemoryWrite({ ...memory, shortTerm }, memoryWrite);
 }
 
+function hydrateDailyBadges(raw: unknown): string[] {
+  if (!Array.isArray(raw)) return [];
+  return raw.filter((item) => typeof item === "string");
+}
+
 export function loadFromSaveData(save: SaveData, now: number): AppState {
   const inventory = hydrateInventory(save.kv?.inventory);
   const llmProvider = hydrateProvider(save.kv?.llmProvider);
   const settingsPanels = hydratePanels(save.kv?.settingsPanels);
   const autoSpeak = hydrateAutoSpeak(save.kv?.autoSpeak, now);
   const memory = hydrateMemory(save.kv?.memory);
+  const dailyBadges = hydrateDailyBadges(save.kv?.dailyBadges);
   const base: AppState = {
     pet: { ...save.state, lastTickAt: save.state.lastTickAt ?? 0 },
     log: save.log ?? [],
@@ -404,6 +411,7 @@ export function loadFromSaveData(save: SaveData, now: number): AppState {
     llmProvider,
     settingsPanels,
     memory,
+    dailyBadges,
     providerErrorDismissedAt:
       typeof save.kv?.providerErrorDismissedAt === "number"
         ? save.kv.providerErrorDismissedAt

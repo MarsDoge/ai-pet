@@ -61,6 +61,7 @@ export function persistSaveData(state: AppState): void {
       settingsPanels: state.settingsPanels,
       providerErrorDismissedAt: state.providerErrorDismissedAt,
       memory: state.memory,
+      dailyBadges: state.dailyBadges,
       autoSpeak: {
         enabled: state.autoSpeakEnabled,
         count: state.autoSpeakCount,
@@ -83,6 +84,7 @@ export function buildExportPayload(state: AppState): string {
       settingsPanels: state.settingsPanels,
       providerErrorDismissedAt: state.providerErrorDismissedAt,
       memory: state.memory,
+      dailyBadges: state.dailyBadges,
       autoSpeak: {
         enabled: state.autoSpeakEnabled,
         count: state.autoSpeakCount,

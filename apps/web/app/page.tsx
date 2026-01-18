@@ -24,6 +24,7 @@ import { ActionBar } from "./components/ActionBar";
 import { ActionFeedback } from "./components/ActionFeedback";
 import { Backpack } from "./components/Backpack";
 import { ChatPanel } from "./components/ChatPanel";
+import { DailyGoals } from "./components/DailyGoals";
 import { NarrativeTimeline } from "./components/NarrativeTimeline";
 import { PetStage } from "./components/PetStage";
 import { ProviderErrorBanner } from "./components/ProviderErrorBanner";
@@ -150,6 +151,17 @@ export default function HomePage() {
         <div className="stagger" style={{ display: "grid", gap: 24 }}>
           <ActionBar onAction={handleAction} />
           <ActionFeedback entries={state.log} />
+          <DailyGoals
+            entries={state.log}
+            claimedDates={state.dailyBadges}
+            onClaim={(dateKey) =>
+              setState((prev) =>
+                prev.dailyBadges.includes(dateKey)
+                  ? prev
+                  : { ...prev, dailyBadges: [...prev.dailyBadges, dateKey] }
+              )
+            }
+          />
           <ChatPanel
             onSend={handleChatSend}
             reply={state.message}

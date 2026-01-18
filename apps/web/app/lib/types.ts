@@ -42,6 +42,7 @@ export type AppState = {
     saveLoad: boolean;
   };
   memory: MemoryState;
+  dailyBadges: string[];
   autoSpeakEnabled: boolean;
   autoSpeakCount: number;
   autoSpeakDate: string;
