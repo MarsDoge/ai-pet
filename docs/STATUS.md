@@ -29,6 +29,7 @@
 - 2026-01-17: Consolidated Milestone F follow-ups (#70-#73) for docs, provider UX, Pages, and CI guard.
 - 2026-01-17: Added action feedback panel to show recent events and deltas.
 - 2026-01-17: Added mood-driven pet expression and emoji label.
+- 2026-01-17: Added state-based action suggestions in status panel.
 
 ## Upcoming
 - Verify Pages deployment URL and add to docs if needed.
