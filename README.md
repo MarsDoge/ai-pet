@@ -154,6 +154,13 @@ flowchart TB
   - `area:core`, `area:memory`, `area:ai`, `area:web`, `area:docs`, `area:ci`
 - PRs should include tests for `pet-core`/`pet-memory` changes.
 
+## Onboarding
+
+Start here:
+- `docs/INDEX.md`
+- `docs/ARCHITECTURE.md`
+- `docs/EXECUTION_PLAN.zh-CN.md`
+
 ---
 
 ## License

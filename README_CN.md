@@ -154,6 +154,13 @@ flowchart TB
   - `area:core`, `area:memory`, `area:ai`, `area:web`, `area:docs`, `area:ci`
 - 涉及 `pet-core`/`pet-memory` 的改动必须附带测试
 
+## 新人入门
+
+建议先读：
+- `docs/INDEX.md`
+- `docs/ARCHITECTURE.md`
+- `docs/EXECUTION_PLAN.zh-CN.md`
+
 ---
 
 ## 许可协议

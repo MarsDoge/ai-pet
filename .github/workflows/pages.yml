@@ -36,6 +36,9 @@ jobs:
         env:
           NEXT_PUBLIC_BASE_PATH: /ai-pet
 
+      - name: Verify Pages output
+        run: test -d apps/web/out
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

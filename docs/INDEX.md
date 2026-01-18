@@ -8,6 +8,8 @@ Quick links to key documents.
 - `docs/SAVEDATA_MIGRATION.md`
 - `docs/WORKFLOW.md`
 - `docs/CODEX_RULES.md`
+- `docs/PROVIDER_SETUP.md`
+- `docs/RELEASE_CHECKLIST.md`
 
 ## Plans & status
 - `docs/EXECUTION_PLAN.zh-CN.md`

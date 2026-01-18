@@ -23,6 +23,7 @@ type SettingsPanelProps = {
     saveLoad: boolean;
   };
   onTogglePanel: (panel: keyof SettingsPanelProps["panels"]) => void;
+  onProviderAttempt: () => void;
 };
 
 const PROVIDER_LABELS: Record<SettingsPanelProps["provider"], string> = {
@@ -48,7 +49,8 @@ export function SettingsPanel({
   onExport,
   onImport,
   panels,
-  onTogglePanel
+  onTogglePanel,
+  onProviderAttempt
 }: SettingsPanelProps) {
   const [status, setStatus] = useState<string | null>(null);
   const missingKey = provider !== "none" && providerKey.trim().length === 0;
@@ -88,7 +90,10 @@ export function SettingsPanel({
               <label className="subtle">AI 提供方</label>
               <select
                 value={provider}
-                onChange={(event) => onProviderChange(event.target.value as SettingsPanelProps["provider"])}
+                onChange={(event) => {
+                  onProviderAttempt();
+                  onProviderChange(event.target.value as SettingsPanelProps["provider"]);
+                }}
                 style={{
                   padding: "10px 12px",
                   borderRadius: 12,
@@ -108,7 +113,10 @@ export function SettingsPanel({
               <input
                 type="password"
                 value={providerKey}
-                onChange={(event) => onProviderKeyChange(event.target.value)}
+                onChange={(event) => {
+                  onProviderAttempt();
+                  onProviderKeyChange(event.target.value);
+                }}
                 placeholder="API Key（可选）"
                 style={{
                   padding: "10px 12px",
@@ -120,7 +128,10 @@ export function SettingsPanel({
               <input
                 type="text"
                 value={providerBaseUrl}
-                onChange={(event) => onProviderBaseUrlChange(event.target.value)}
+                onChange={(event) => {
+                  onProviderAttempt();
+                  onProviderBaseUrlChange(event.target.value);
+                }}
                 placeholder="Base URL（可选）"
                 style={{
                   padding: "10px 12px",
@@ -132,7 +143,10 @@ export function SettingsPanel({
               <input
                 type="text"
                 value={providerModel}
-                onChange={(event) => onProviderModelChange(event.target.value)}
+                onChange={(event) => {
+                  onProviderAttempt();
+                  onProviderModelChange(event.target.value);
+                }}
                 placeholder="Model（可选）"
                 style={{
                   padding: "10px 12px",
@@ -141,6 +155,9 @@ export function SettingsPanel({
                   fontFamily: "inherit"
                 }}
               />
+              <a className="subtle" href="https://marsdoge.github.io/ai-pet/PROVIDER_SETUP.html">
+                配置说明（在线）
+              </a>
             </div>
           ) : null}
         </div>

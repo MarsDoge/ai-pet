@@ -164,6 +164,13 @@ export default function HomePage() {
             onProviderKeyChange={(value) => setProviderSettings((prev) => ({ ...prev, apiKey: value }))}
             onProviderBaseUrlChange={(value) => setProviderSettings((prev) => ({ ...prev, baseUrl: value }))}
             onProviderModelChange={(value) => setProviderSettings((prev) => ({ ...prev, model: value }))}
+            onProviderAttempt={() =>
+              setState((prev) => ({
+                ...prev,
+                providerError: undefined,
+                providerErrorDismissedAt: undefined
+              }))
+            }
             autoSpeakEnabled={state.autoSpeakEnabled}
             autoSpeakCount={state.autoSpeakCount}
             onToggleAutoSpeak={handleToggleAutoSpeak}
