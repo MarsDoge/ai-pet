@@ -36,7 +36,15 @@ describe("SaveData", () => {
     expect(loaded.kv).toEqual({
       foo: "bar",
       inventory: [{ id: "food-basic", name: "Crunchy Kibble", kind: "food", quantity: 1 }],
-      autoSpeak: { enabled: true, count: 2, date: "2026-01-17" }
+      autoSpeak: { enabled: true, count: 2, date: "2026-01-17" },
+      memory: {
+        shortTerm: [],
+        longTerm: {
+          profile: "",
+          preferences: [],
+          notes: {}
+        }
+      }
     });
     expect(loaded.log).toEqual([{ type: "TICK", at: 1200 }]);
   });
