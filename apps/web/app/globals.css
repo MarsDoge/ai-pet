@@ -1,20 +1,58 @@
+/* ============================================================
+   AI Pet — Claymorphism Design System
+   Soft 3D, chunky, playful, toy-like, bubbly
+   ============================================================ */
+
 :root {
   color-scheme: light;
-  --bg-1: #f6f2e8;
-  --bg-2: #f4dfcf;
-  --bg-3: #e7f0f8;
-  --ink-1: #1e1b16;
-  --ink-2: #4a4034;
-  --ink-3: #6c5f50;
-  --accent-1: #f07f5f;
-  --accent-2: #2f7e8e;
-  --accent-3: #f6b45f;
-  --card: #fffaf4;
-  --border: rgba(30, 27, 22, 0.12);
-  --shadow: 0 24px 60px rgba(26, 22, 17, 0.18);
-  --font-sans: "Futura", "Avenir Next", "Gill Sans", "Trebuchet MS", sans-serif;
-  --font-serif: "Iowan Old Style", "Palatino Linotype", "Garamond", serif;
+
+  /* --- Palette --- */
+  --bg-1: #FFF7ED;
+  --bg-2: #FEF3E2;
+  --bg-3: #F0F7FF;
+  --ink-1: #3D2C1E;
+  --ink-2: #6B5344;
+  --ink-3: #9A816D;
+  --accent-1: #F97316;
+  --accent-2: #2563EB;
+  --accent-3: #F6B45F;
+  --accent-green: #22C55E;
+  --accent-pink: #EC4899;
+  --accent-purple: #A855F7;
+  --card: #FFFAF4;
+  --card-soft: rgba(255, 250, 244, 0.88);
+  --border: rgba(61, 44, 30, 0.15);
+  --border-thick: rgba(61, 44, 30, 0.22);
+
+  /* --- Clay shadows (inner + outer) --- */
+  --shadow-clay: 6px 6px 12px rgba(61, 44, 30, 0.12),
+    inset -2px -2px 6px rgba(61, 44, 30, 0.06),
+    inset 2px 2px 6px rgba(255, 255, 255, 0.7);
+  --shadow-clay-hover: 8px 8px 18px rgba(61, 44, 30, 0.16),
+    inset -2px -2px 6px rgba(61, 44, 30, 0.08),
+    inset 2px 2px 8px rgba(255, 255, 255, 0.8);
+  --shadow-clay-pressed: 2px 2px 4px rgba(61, 44, 30, 0.1),
+    inset 3px 3px 8px rgba(61, 44, 30, 0.12),
+    inset -1px -1px 4px rgba(255, 255, 255, 0.5);
+
+  /* --- Typography --- */
+  --font-heading: "Fredoka", "Nunito", ui-rounded, system-ui, sans-serif;
+  --font-body: "Nunito", ui-rounded, system-ui, sans-serif;
+
+  /* --- Radius --- */
+  --radius-xl: 24px;
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --radius-pill: 999px;
+
+  /* --- Border width --- */
+  --border-w: 3px;
 }
+
+/* ============================================================
+   Reset & Base
+   ============================================================ */
 
 * {
   box-sizing: border-box;
@@ -25,29 +63,35 @@ body {
   padding: 0;
   margin: 0;
   min-height: 100%;
-  background: radial-gradient(circle at top left, var(--bg-3), transparent 55%),
-    radial-gradient(circle at 70% 10%, var(--bg-2), transparent 45%),
-    linear-gradient(120deg, var(--bg-1), #f7efe6 40%, #f1f7ff 100%);
+  background:
+    radial-gradient(ellipse at 15% 5%, rgba(249, 115, 22, 0.08), transparent 50%),
+    radial-gradient(ellipse at 80% 15%, rgba(37, 99, 235, 0.06), transparent 45%),
+    radial-gradient(ellipse at 50% 85%, rgba(168, 85, 247, 0.05), transparent 50%),
+    linear-gradient(150deg, var(--bg-1) 0%, var(--bg-2) 45%, var(--bg-3) 100%);
   color: var(--ink-1);
 }
 
 body {
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
+  font-weight: 500;
+  line-height: 1.6;
 }
 
 main {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  padding: 32px clamp(16px, 4vw, 48px) 48px;
+  gap: 28px;
+  padding: 36px clamp(16px, 4vw, 48px) 56px;
+  max-width: 1280px;
+  margin: 0 auto;
 }
 
-h1,
-h2,
-h3 {
-  font-family: var(--font-serif);
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  font-weight: 700;
   margin: 0;
+  line-height: 1.3;
 }
 
 p {
@@ -55,13 +99,18 @@ p {
 }
 
 button {
-  font-family: inherit;
+  font-family: var(--font-body);
+  font-weight: 600;
 }
+
+/* ============================================================
+   Layout Shell
+   ============================================================ */
 
 .app-shell {
   display: grid;
-  grid-template-columns: minmax(240px, 320px) 1fr;
-  gap: 24px;
+  grid-template-columns: minmax(260px, 340px) 1fr;
+  gap: 28px;
   align-items: start;
 }
 
@@ -74,70 +123,118 @@ button {
 .side-column,
 .main-column {
   display: grid;
-  gap: 20px;
+  gap: 24px;
 }
+
+/* ============================================================
+   Clay Panel — Core card component
+   ============================================================ */
 
 .panel {
   background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  box-shadow: var(--shadow);
-  padding: 20px;
+  border: var(--border-w) solid var(--border-thick);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-clay);
+  padding: 22px;
+  transition: box-shadow 0.25s ease-out, transform 0.25s ease-out;
 }
 
 .panel.soft {
-  background: rgba(255, 250, 244, 0.85);
+  background: var(--card-soft);
+  backdrop-filter: blur(8px);
 }
 
 .section-title {
-  font-size: 20px;
-  letter-spacing: 0.02em;
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--ink-1);
 }
 
 .subtle {
   color: var(--ink-3);
   font-size: 14px;
+  font-weight: 500;
 }
+
+/* ============================================================
+   Badge — Chunky pill
+   ============================================================ */
 
 .badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.7);
-  font-size: 12px;
+  padding: 7px 14px;
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--border-thick);
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow:
+    3px 3px 6px rgba(61, 44, 30, 0.08),
+    inset 1px 1px 3px rgba(255, 255, 255, 0.9);
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  color: var(--ink-2);
 }
+
+/* ============================================================
+   Tab Bar
+   ============================================================ */
 
 .tab-bar {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   flex-wrap: wrap;
-  padding: 12px;
+  padding: 14px;
 }
 
 .tab-button {
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.6);
-  padding: 6px 12px;
-  border-radius: 999px;
+  border: 2px solid var(--border-thick);
+  background: rgba(255, 255, 255, 0.75);
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
   cursor: pointer;
-  font-size: 13px;
-  letter-spacing: 0.04em;
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ink-2);
+  box-shadow:
+    3px 3px 6px rgba(61, 44, 30, 0.08),
+    inset 1px 1px 3px rgba(255, 255, 255, 0.9);
+  transition: all 0.2s ease-out;
+}
+
+.tab-button:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    4px 4px 10px rgba(61, 44, 30, 0.12),
+    inset 1px 1px 3px rgba(255, 255, 255, 0.9);
+}
+
+.tab-button:active {
+  transform: translateY(1px);
+  box-shadow: var(--shadow-clay-pressed);
 }
 
 .tab-button.active {
-  background: var(--accent-1);
+  background: linear-gradient(135deg, var(--accent-1), #FB923C);
   color: #fff;
   border-color: transparent;
+  box-shadow:
+    4px 4px 12px rgba(249, 115, 22, 0.3),
+    inset -1px -1px 4px rgba(0, 0, 0, 0.1),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.3);
 }
 
 .tab-content .panel {
   box-shadow: none;
   background: rgba(255, 250, 244, 0.7);
+  border: 2px dashed var(--border);
 }
 
 .tab-content .section-title {
@@ -148,6 +245,10 @@ button {
   font-size: 12px;
 }
 
+/* ============================================================
+   Collapsible (details/summary)
+   ============================================================ */
+
 .collapsible {
   padding: 0;
 }
@@ -155,9 +256,16 @@ button {
 .collapsible summary {
   list-style: none;
   cursor: pointer;
-  padding: 14px 18px;
-  font-family: var(--font-serif);
+  padding: 16px 20px;
+  font-family: var(--font-heading);
   font-size: 18px;
+  font-weight: 600;
+  color: var(--ink-1);
+  transition: color 0.2s ease;
+}
+
+.collapsible summary:hover {
+  color: var(--accent-1);
 }
 
 .collapsible summary::-webkit-details-marker {
@@ -165,7 +273,7 @@ button {
 }
 
 .collapsible .collapsible-body {
-  padding: 0 18px 18px;
+  padding: 0 20px 20px;
 }
 
 .collapsible .panel {
@@ -179,60 +287,69 @@ button {
   display: none;
 }
 
+/* ============================================================
+   Animations
+   ============================================================ */
+
 .fade-in {
-  animation: fadeIn 0.8s ease-out;
+  animation: fadeIn 0.6s ease-out;
 }
 
 .stagger > * {
-  animation: riseIn 0.7s ease-out;
+  animation: riseIn 0.5s ease-out;
   animation-fill-mode: both;
 }
 
-.stagger > *:nth-child(1) {
-  animation-delay: 0.05s;
-}
-.stagger > *:nth-child(2) {
-  animation-delay: 0.12s;
-}
-.stagger > *:nth-child(3) {
-  animation-delay: 0.18s;
-}
-.stagger > *:nth-child(4) {
-  animation-delay: 0.24s;
-}
+.stagger > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger > *:nth-child(4) { animation-delay: 0.2s; }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 @keyframes riseIn {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  from { opacity: 0; transform: translateY(16px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes gentleBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-in,
+  .stagger > * {
+    animation: none;
   }
 }
+
+/* ============================================================
+   Pet Stage — 3D viewport
+   ============================================================ */
 
 .pet-stage {
   position: relative;
   height: min(420px, 60vh);
-  border-radius: 24px;
-  border: 1px dashed rgba(30, 27, 22, 0.25);
-  background: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.7), transparent 55%),
-    linear-gradient(135deg, rgba(240, 127, 95, 0.2), transparent 55%);
+  border-radius: var(--radius-xl);
+  border: var(--border-w) solid var(--border-thick);
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.8), transparent 55%),
+    linear-gradient(135deg, rgba(249, 115, 22, 0.12), rgba(37, 99, 235, 0.08) 60%, rgba(168, 85, 247, 0.06));
   overflow: hidden;
+  box-shadow: var(--shadow-clay);
 }
 
 .pet-stage-3d {
-  padding: 18px;
+  padding: 20px;
 }
 
 .pet-canvas {
@@ -251,48 +368,60 @@ button {
   z-index: 2;
 }
 
+/* ============================================================
+   Pet Avatar (CSS fallback)
+   ============================================================ */
+
 .pet-avatar {
   width: 120px;
   height: 120px;
   border-radius: 40% 60% 50% 50%;
-  background: linear-gradient(140deg, #ffb574, #f07f5f);
+  background: linear-gradient(140deg, #FFB574, var(--accent-1));
   position: absolute;
   display: grid;
   place-items: center;
-  box-shadow: 0 20px 40px rgba(240, 127, 95, 0.25);
+  border: var(--border-w) solid rgba(61, 44, 30, 0.18);
+  box-shadow:
+    0 20px 40px rgba(249, 115, 22, 0.2),
+    inset -3px -3px 8px rgba(0, 0, 0, 0.08),
+    inset 3px 3px 8px rgba(255, 255, 255, 0.5);
   cursor: grab;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: breathe 3s ease-in-out infinite;
 }
 
 .pet-avatar:active {
   cursor: grabbing;
-  transform: scale(0.98);
+  transform: scale(0.95);
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pet-avatar {
+    animation: none;
+  }
 }
 
 .pet-face {
   width: 56px;
   height: 56px;
-  border-radius: 18px;
-  background: #fff3e4;
+  border-radius: var(--radius-lg);
+  background: #FFF3E4;
   position: relative;
+  border: 2px solid rgba(61, 44, 30, 0.1);
 }
 
 .pet-eye {
   position: absolute;
   top: 20px;
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
-  background: #2f1f15;
+  background: #2F1F15;
 }
 
-.pet-eye.left {
-  left: 14px;
-}
-
-.pet-eye.right {
-  right: 14px;
-}
+.pet-eye.left { left: 14px; }
+.pet-eye.right { right: 14px; }
 
 .pet-mouth {
   position: absolute;
@@ -300,7 +429,7 @@ button {
   left: 50%;
   width: 20px;
   height: 10px;
-  border: 2px solid #2f1f15;
+  border: 2px solid #2F1F15;
   border-top: 0;
   border-radius: 0 0 20px 20px;
   transform: translateX(-50%);
@@ -319,16 +448,16 @@ button {
 .pet-avatar.mood-bored .pet-mouth {
   height: 2px;
   border: none;
-  background: #2f1f15;
+  background: #2F1F15;
   border-radius: 2px;
 }
 
 .pet-avatar.mood-hungry .pet-mouth {
   height: 14px;
   border-radius: 12px;
-  border: 2px solid #2f1f15;
-  border-top: 2px solid #2f1f15;
-  background: #fbe6d6;
+  border: 2px solid #2F1F15;
+  border-top: 2px solid #2F1F15;
+  background: #FBE6D6;
 }
 
 .pet-avatar.mood-tired .pet-eye {
@@ -345,35 +474,50 @@ button {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #e2c6aa;
+  background: #D6B896;
 }
+
+/* ============================================================
+   Speech Bubble — Chunky with triangle
+   ============================================================ */
 
 .speech-bubble {
   position: absolute;
-  max-width: 240px;
+  max-width: 260px;
   background: #fff;
-  border-radius: 18px;
-  padding: 12px 14px;
-  border: 1px solid var(--border);
-  box-shadow: 0 16px 24px rgba(26, 22, 17, 0.12);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  border: var(--border-w) solid var(--border-thick);
+  box-shadow: var(--shadow-clay);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-1);
 }
 
 .speech-bubble::after {
   content: "";
   position: absolute;
-  bottom: -10px;
-  left: 24px;
-  width: 18px;
-  height: 18px;
+  bottom: -12px;
+  left: 28px;
+  width: 20px;
+  height: 20px;
   background: #fff;
-  border-left: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  transform: rotate(45deg);
+  border-left: var(--border-w) solid var(--border-thick);
+  border-bottom: var(--border-w) solid var(--border-thick);
+  transform: rotate(-45deg);
+  box-shadow:
+    -3px 3px 4px rgba(61, 44, 30, 0.06),
+    inset 1px -1px 2px rgba(255, 255, 255, 0.5);
 }
+
+/* ============================================================
+   Status Panel — Stat bars
+   ============================================================ */
 
 .status-grid {
   display: grid;
-  gap: 12px;
+  gap: 14px;
 }
 
 .stat-row {
@@ -381,77 +525,175 @@ button {
   grid-template-columns: 80px 1fr 40px;
   align-items: center;
   gap: 12px;
-  font-size: 13px;
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-2);
 }
 
 .stat-bar {
-  height: 8px;
-  border-radius: 999px;
-  background: rgba(30, 27, 22, 0.1);
+  height: 12px;
+  border-radius: var(--radius-pill);
+  background: rgba(61, 44, 30, 0.08);
   overflow: hidden;
+  border: 2px solid rgba(61, 44, 30, 0.08);
+  box-shadow: inset 2px 2px 4px rgba(61, 44, 30, 0.06);
 }
 
 .stat-bar > span {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, var(--accent-2), var(--accent-1));
+  background: linear-gradient(90deg, var(--accent-1), var(--accent-3));
+  box-shadow: inset -1px -1px 2px rgba(0, 0, 0, 0.1),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.4);
+  transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+
+/* ============================================================
+   Action Grid — Chunky buttons
+   ============================================================ */
 
 .action-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 14px;
 }
 
 .action-button {
-  border: 1px solid var(--border);
+  border: var(--border-w) solid var(--border-thick);
   background: #fff;
-  border-radius: 12px;
-  padding: 10px 12px;
-  font-size: 13px;
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 600;
   display: grid;
-  gap: 6px;
+  gap: 4px;
   text-align: left;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  color: var(--ink-1);
+  box-shadow: var(--shadow-clay);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.2s ease-out;
 }
 
 .action-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 18px rgba(26, 22, 17, 0.12);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-clay-hover);
 }
+
+.action-button:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: var(--shadow-clay-pressed);
+}
+
+/* ============================================================
+   Inventory
+   ============================================================ */
 
 .inventory-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 14px;
 }
 
 .inventory-card {
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 12px;
-  background: rgba(255, 255, 255, 0.8);
+  border: var(--border-w) solid var(--border-thick);
+  border-radius: var(--radius-lg);
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: var(--shadow-clay);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.2s ease-out;
+  cursor: pointer;
+}
+
+.inventory-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-clay-hover);
 }
 
 .inventory-card button {
-  margin-top: 8px;
+  margin-top: 10px;
   width: 100%;
 }
 
+/* ============================================================
+   Save/Load
+   ============================================================ */
+
 .save-grid {
   display: grid;
-  gap: 12px;
+  gap: 14px;
 }
 
 .save-grid textarea {
   width: 100%;
   min-height: 120px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  padding: 10px;
+  border-radius: var(--radius-md);
+  border: var(--border-w) solid var(--border-thick);
+  padding: 12px 14px;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     "Courier New", monospace;
   font-size: 12px;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: inset 2px 2px 6px rgba(61, 44, 30, 0.06);
+  transition: border-color 0.2s ease;
+}
+
+.save-grid textarea:focus {
+  outline: none;
+  border-color: var(--accent-1);
+  box-shadow: inset 2px 2px 6px rgba(61, 44, 30, 0.06),
+    0 0 0 3px rgba(249, 115, 22, 0.15);
+}
+
+/* ============================================================
+   Form inputs (settings, chat)
+   ============================================================ */
+
+input[type="text"],
+input[type="password"],
+select {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 14px;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  border: var(--border-w) solid var(--border-thick);
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--ink-1);
+  box-shadow: inset 2px 2px 6px rgba(61, 44, 30, 0.05);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+select:focus {
+  outline: none;
+  border-color: var(--accent-1);
+  box-shadow: inset 2px 2px 6px rgba(61, 44, 30, 0.05),
+    0 0 0 3px rgba(249, 115, 22, 0.15);
+}
+
+input[type="text"]::placeholder,
+input[type="password"]::placeholder {
+  color: var(--ink-3);
+  font-weight: 400;
+}
+
+/* ============================================================
+   Links
+   ============================================================ */
+
+a {
+  color: var(--accent-2);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--accent-1);
 }
